@@ -11,7 +11,7 @@ Funkcionalni dvojezični prototip službene web-stranice Zagrebačkog tamburašk
 - `public/` — javni statički asseti
 - `.github/workflows/deploy-pages.yml` — automatski GitHub Pages deployment
 
-Sve kolekcije imaju `published`; javno se prikazuju samo zapisi s `published: true`. Događaji se automatski dijele na nadolazeće i arhivu prema datumu.
+Sve kolekcije imaju `published`; javno se prikazuju samo zapisi s `published: true`. Događaji se automatski dijele na nadolazeće i arhivu prema datumu. Google Drive je urednički izvor, ali se management podaci ne objavljuju izravnom automatiziranom sinkronizacijom; pravila i tijek sigurnog ažuriranja opisani su u [`docs/GOOGLE_DRIVE_CONTENT_WORKFLOW.md`](docs/GOOGLE_DRIVE_CONTENT_WORKFLOW.md).
 
 ## Lokalni razvoj
 
@@ -78,6 +78,6 @@ Na GitHub Free planu Pages za ovaj projekt zahtijeva javni repozitorij. Ako repo
 
 Povežite repo s Cloudflare Pages, postavite build command `npm run build`, output direktorij `dist` i produkcijsku varijablu `PUBLIC_BOOKING_ENDPOINT`. Za vlastitu domenu promijenite `site` i uklonite `base` u `astro.config.mjs`; aplikacijski linkovi ostat će funkcionalni.
 
-## Vizualni asseti — TODO
+## Vizualni asseti
 
-Repo trenutno ne sadrži službeni logo, fotografije kvarteta ni album cover. Komponente zato imaju jasno označena privremena mjesta. Dodajte odobrene datoteke u `public/images/` i unesite njihove putanje u podatke/hero komponente; ne koristiti generirane portrete ili nepotvrđene fotografije.
+Odobreni službeni asseti nalaze se u `public/images/brand`, `public/images/ensemble` i `public/images/album`. Putanje se vode kroz `BASE_URL`, pa rade i na GitHub Pages podmapi. Za nove fotografije koristite izvorne datoteke iz povezane Drive mape; ne generirajte zamjenska lica ili instrumente.

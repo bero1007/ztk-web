@@ -6,7 +6,7 @@ const r = routes(lang); const l = labels[lang];
 ---
 <footer>
   <div class="container footer-grid">
-    <div class="stack"><p class="eyebrow">ZTK</p><h2>{lang === 'hr' ? 'Tradicija u suvremenom izrazu.' : 'Tradition in a contemporary voice.'}</h2></div>
+    <div class="stack"><div class="footer-brand"><img class="footer-logo" src={path('/images/brand/mark-light.svg')} alt="" /><p>Zagrebački tamburaški kvartet<br /><span>Zagreb Tambura Quartet</span></p></div><h2>{lang === 'hr' ? 'Tradicija u suvremenom izrazu.' : 'Tradition in a contemporary voice.'}</h2></div>
     <div class="footer-links">
       <a href={path(r.booking)}>zagreb.tambura.quartet@gmail.com</a>
       <a href={path(r.privacy)}>{l.privacy}</a>
@@ -18,6 +18,7 @@ const r = routes(lang); const l = labels[lang];
   footer { padding: 84px 0 38px; background: #071c37; color: white; }
   .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 50px; align-items: end; }
   h2 { max-width: 700px; font-size: clamp(2.4rem, 5vw, 5rem); }
+  .footer-brand{display:flex;align-items:center;gap:14px}.footer-logo { width:25px;height:66px;object-fit:contain }.footer-brand p{font:600 1rem/1.12 var(--serif)}.footer-brand span{color:#bdcbdb;font:500 .72rem var(--sans);letter-spacing:.05em}
   .footer-links { display: grid; gap: 12px; justify-items: end; text-align: right; color: #bdcbdb; font-size: .82rem; }
   .footer-links a { text-underline-offset: 4px; }
   @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; } .footer-links { justify-items: start; text-align: left; } }

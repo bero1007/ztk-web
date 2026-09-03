@@ -5,15 +5,16 @@ const { member, lang } = Astro.props as { member: Member; lang: Lang };
 const href = lang === 'hr' ? `/kvartet/${member.slug}/` : `/en/quartet/${member.slug}/`;
 ---
 <article class="member-card">
-  <div class="portrait" role="img" aria-label={`${member.name} — fotografija će biti dodana`}><span>TODO · fotografija</span></div>
-  <div><p class="eyebrow">{member.instrument[lang]}</p><h3>{member.name}</h3><a class="text-link" href={path(href)}>{lang === 'hr' ? 'Upoznajte člana' : 'Meet the member'} <span>→</span></a></div>
+  <div class="portrait">{member.photo && <img src={path(member.photo)} alt={member.name} loading="lazy" style={`object-position:${member.photoPosition || 'center'}`} />}</div>
+  <div><p class="eyebrow">{member.instrument[lang]}</p><h3>{member.name}</h3><p class="member-note">{lang === 'hr' ? member.bioShortHr : member.bioShortEn}</p><a class="text-link" href={path(href)}>{lang === 'hr' ? 'Upoznajte člana' : 'Meet the member'} <span>→</span></a></div>
 </article>
 <style>
   .member-card { display: grid; gap: 20px; }
-  .portrait { aspect-ratio: .82; border-radius: 48% 48% 18px 18px; background: linear-gradient(145deg, #dce7f2, #96abc5); position: relative; overflow: hidden; }
-  .portrait::after { content: ''; position: absolute; inset: 18% 24% -10%; border-radius: 50% 50% 20% 20%; background: rgba(12,39,75,.18); }
-  .portrait span { position: absolute; bottom: 12px; left: 14px; z-index: 1; font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
+  .portrait { aspect-ratio: .82; border-radius: 48% 48% 18px 18px; background: var(--color-blue-100); position: relative; overflow: hidden; }
+  .portrait img { width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .35s ease; }
+  .member-card:hover .portrait img { transform:scale(1.04); }
   .member-card > div:last-child { display: grid; gap: 9px; }
+  .member-note { color:var(--color-muted);font-size:.82rem;line-height:1.55; }
   h3 { font-size: clamp(1.45rem, 2.4vw, 2.1rem); }
   @media (max-width:560px) { .member-card .text-link { font-size: .74rem; } }
 </style>
