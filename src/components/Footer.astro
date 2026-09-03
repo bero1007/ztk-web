@@ -1,0 +1,24 @@
+---
+import type { Lang } from '@/data/content';
+import { labels, routes, path } from '@/lib/i18n';
+const { lang } = Astro.props as { lang: Lang };
+const r = routes(lang); const l = labels[lang];
+---
+<footer>
+  <div class="container footer-grid">
+    <div class="stack"><p class="eyebrow">ZTK</p><h2>{lang === 'hr' ? 'Tradicija u suvremenom izrazu.' : 'Tradition in a contemporary voice.'}</h2></div>
+    <div class="footer-links">
+      <a href={path(r.booking)}>zagreb.tambura.quartet@gmail.com</a>
+      <a href={path(r.privacy)}>{l.privacy}</a>
+      <p>© {new Date().getFullYear()} Zagreb Tambura Quartet</p>
+    </div>
+  </div>
+</footer>
+<style>
+  footer { padding: 84px 0 38px; background: #071c37; color: white; }
+  .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 50px; align-items: end; }
+  h2 { max-width: 700px; font-size: clamp(2.4rem, 5vw, 5rem); }
+  .footer-links { display: grid; gap: 12px; justify-items: end; text-align: right; color: #bdcbdb; font-size: .82rem; }
+  .footer-links a { text-underline-offset: 4px; }
+  @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; } .footer-links { justify-items: start; text-align: left; } }
+</style>

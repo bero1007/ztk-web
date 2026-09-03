@@ -1,0 +1,11 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'; import Hero from '@/components/Hero.astro'; import MemberCard from '@/components/MemberCard.astro';
+import { members, published } from '@/data/content'; import type { Lang } from '@/data/content'; import { routes } from '@/lib/i18n';
+const { lang }=Astro.props as {lang:Lang}; const r=routes(lang); const hr=lang==='hr';
+const schema = published(members).map((member) => ({'@context':'https://schema.org','@type':'Person',name:member.name,memberOf:{'@type':'MusicGroup',name:'Zagreb Tambura Quartet'}}));
+---
+<BaseLayout {lang} title={hr?'Kvartet — Zagrebački tamburaški kvartet':'Quartet — Zagreb Tambura Quartet'} description={hr?'Četiri glazbenika, jedan suvremeni komorni zvuk tambure.':'Four musicians, one contemporary chamber voice for the tambura.'} canonicalPath={r.quartet} alternatePath={hr?'/en/quartet/':'/kvartet/'} {schema}>
+  <Hero eyebrow={hr?'Ansambl':'Ensemble'} title={hr?'Četiri glasa.<br><em>Jedan zvuk.</em>':'Four voices.<br><em>One sound.</em>'} description={hr?'Zagrebački tamburaški kvartet okuplja četvoricu glazbenika posvećenih tamburi u komornom kontekstu. Detaljna biografija čeka potvrđeni tekst.':'Zagreb Tambura Quartet brings together four musicians dedicated to the tambura in a chamber-music context. The full biography awaits approved copy.'} />
+  <section class="section"><div class="container"><div class="section-head"><p class="eyebrow">{hr?'Članovi':'Members'}</p><h2>{hr?'Kvartet izbliza':'Meet the quartet'}</h2></div><div class="grid-4">{published(members).map((member)=><MemberCard {member} {lang}/>)}</div></div></section>
+  <section class="section alt"><div class="container grid-2"><div class="photo-placeholder"><span>TODO · koncertna fotografija</span></div><div class="stack"><p class="eyebrow">{hr?'Biografija':'Biography'}</p><h2>{hr?'Suvremeni komorni pogled na tamburu.':'A contemporary chamber perspective on the tambura.'}</h2><p class="lead">{hr?'Cjelovita biografija ansambla bit će objavljena nakon sadržajne autorizacije kvarteta. Ovaj prototip namjerno ne uvodi nepotvrđene povijesne činjenice.':'The ensemble’s full biography will be published after editorial approval. This prototype intentionally contains no unverified historical claims.'}</p></div></div></section>
+</BaseLayout>

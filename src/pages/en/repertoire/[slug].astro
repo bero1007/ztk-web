@@ -1,0 +1,8 @@
+---
+import RepertoireDetail from '@/components/RepertoireDetail.astro';
+import { repertoire, published } from '@/data/content';
+import type { Work } from '@/data/content';
+export function getStaticPaths() { return published(repertoire).map((work) => ({ params: { slug: work.slug }, props: { work } })); }
+const { work } = Astro.props as { work: Work };
+---
+<RepertoireDetail lang="en" {work} />

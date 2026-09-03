@@ -1,0 +1,12 @@
+---
+import type { EventItem,Lang } from '@/data/content';
+const {events,lang}=Astro.props as {events:EventItem[];lang:Lang};
+const mapEvents=events.filter(e=>e.latitude!=null&&e.longitude!=null).map(e=>({title:lang==='hr'?e.titleHr:e.titleEn,date:e.date,venue:e.venue,lat:e.latitude,lng:e.longitude,slug:e.slug}));
+---
+<div class="map-shell"><div id="events-map" data-events={JSON.stringify(mapEvents)} data-lang={lang} aria-label={lang==='hr'?'Karta događaja':'Events map'}></div></div>
+<script>
+ import L from 'leaflet'; import 'leaflet/dist/leaflet.css'; import { path } from '@/lib/i18n';
+ const el=document.querySelector<HTMLElement>('#events-map');
+ if(el){const items=JSON.parse(el.dataset.events||'[]');const lang=el.dataset.lang;const map=L.map(el,{scrollWheelZoom:false}).setView([45.8007,15.9708],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors',maxZoom:19}).addTo(map);const icon=L.divIcon({className:'ztk-marker',html:'<span></span>',iconSize:[28,28],iconAnchor:[14,14]});items.forEach((item:any)=>{const href=lang==='hr'?`/dogadjaji/${item.slug}/`:`/en/events/${item.slug}/`;L.marker([item.lat,item.lng],{icon}).addTo(map).bindPopup(`<strong>${item.title}</strong><br>${item.date}<br>${item.venue}<br><a href="${path(href)}">${lang==='hr'?'Detalji':'Details'} →</a>`)});setTimeout(()=>map.invalidateSize(),50)}
+</script>
+<style>.map-shell{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--color-line);box-shadow:var(--shadow-soft)}#events-map{height:420px;background:#dfeaf4}:global(.ztk-marker span){display:block;width:24px;height:24px;background:var(--color-copper);border:5px solid var(--color-navy-900);border-radius:50%;box-shadow:0 4px 14px rgba(12,39,75,.35)}:global(.leaflet-popup-content-wrapper){border-radius:14px;color:var(--color-text);font-family:var(--sans)}:global(.leaflet-popup-content a){color:var(--color-copper);font-weight:700}</style>

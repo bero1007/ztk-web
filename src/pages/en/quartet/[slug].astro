@@ -1,0 +1,8 @@
+---
+import MemberDetail from '@/components/MemberDetail.astro';
+import { members, published } from '@/data/content';
+import type { Member } from '@/data/content';
+export function getStaticPaths() { return published(members).map((member) => ({ params: { slug: member.slug }, props: { member } })); }
+const { member } = Astro.props as { member: Member };
+---
+<MemberDetail lang="en" {member} />

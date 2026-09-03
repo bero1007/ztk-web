@@ -1,0 +1,8 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import Hero from '@/components/Hero.astro';import type{Lang,Member}from '@/data/content';import{path,routes}from '@/lib/i18n';
+const{lang,member}=Astro.props as{lang:Lang;member:Member};const hr=lang==='hr';const r=routes(lang);const canonicalPath=hr?`/kvartet/${member.slug}/`:`/en/quartet/${member.slug}/`;const alternatePath=hr?`/en/quartet/${member.slug}/`:`/kvartet/${member.slug}/`;const schema={'@context':'https://schema.org','@type':'Person',name:member.name,memberOf:{'@type':'MusicGroup',name:'Zagreb Tambura Quartet'}};
+---
+<BaseLayout {lang} title={`${member.name} — ZTK`} description={`${member.name}, ${member.instrument[lang]}, Zagreb Tambura Quartet.`} {canonicalPath} {alternatePath} {schema}>
+ <Hero eyebrow={member.instrument[lang]} title={member.name} description="Zagreb Tambura Quartet" compact />
+ <section class="section"><div class="container grid-2"><div class="photo-placeholder"><span>TODO · autorizirana fotografija člana</span></div><div class="stack"><p class="eyebrow">{hr?'Biografija':'Biography'}</p><h2>{member.name}</h2><p class="lead">{hr?member.bioFullHr:member.bioFullEn}</p><p class="empty-note">{hr?'Umjetnički rad i poveznice bit će dodani isključivo iz potvrđenih izvora.':'Artistic work and links will be added only from approved sources.'}</p><a class="button" href={path(r.quartet)}>← {hr?'Natrag na kvartet':'Back to quartet'}</a></div></div></section>
+</BaseLayout>

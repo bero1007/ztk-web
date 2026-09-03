@@ -1,0 +1,10 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import Hero from '@/components/Hero.astro';import{mediaLinks,videos}from '@/data/content';import type{Lang}from '@/data/content';import{routes}from '@/lib/i18n';
+const{lang}=Astro.props as{lang:Lang};const hr=lang==='hr';const r=routes(lang);
+---
+<BaseLayout {lang} title={hr?'Mediji — ZTK':'Media — ZTK'} description={hr?'Službeni video, društvene mreže i album Tambura da camera.':'Official video, social channels and the album Tambura da camera.'} canonicalPath={r.media} alternatePath={hr?'/en/media/':'/mediji/'}>
+ <Hero eyebrow={hr?'Mediji':'Media'} title={hr?'Slušajte. Gledajte.<br><em>Ostanite blizu.</em>':'Listen. Watch.<br><em>Stay close.</em>'} description={hr?'Odaberite platformu — bez automatske reprodukcije i suvišnih embedova.':'Choose a platform — no autoplay and no unnecessary embeds.'} compact />
+ <section class="section"><div class="container"><div class="section-head"><p class="eyebrow">Streaming & social</p><h2>Tambura da camera</h2></div><div class="media-grid">{mediaLinks.map((item,index)=><a href={item.url} target="_blank" rel="noreferrer"><span>{String(index+1).padStart(2,'0')}</span><h3>{item.label}</h3><b>↗</b></a>)}</div></div></section>
+ <section class="section alt"><div class="container"><div class="section-head"><p class="eyebrow">Video</p><h2>Mozart</h2></div><div class="grid-2">{videos.map(video=><a class="video-card card" href={video.url} target="_blank" rel="noreferrer"><p class="eyebrow">{video.composer}</p><h3><i>{video.work}</i></h3><p>{video.movement}</p><span class="button">YouTube ↗</span></a>)}</div></div></section>
+</BaseLayout>
+<style>.media-grid{border-top:1px solid var(--color-line)}.media-grid>a{display:grid;grid-template-columns:60px 1fr auto;align-items:center;padding:22px 10px;border-bottom:1px solid var(--color-line);text-decoration:none}.media-grid>a span{color:var(--color-copper)}.media-grid>a b{font-size:1.3rem;transition:transform .2s}.media-grid>a:hover b{transform:translate(4px,-4px)}.video-card{display:grid;gap:12px;text-decoration:none}.video-card .button{justify-self:start;margin-top:10px}</style>

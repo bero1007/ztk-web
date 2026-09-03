@@ -1,0 +1,16 @@
+---
+interface Props { eyebrow?: string; title: string; description?: string; photo?: string; programmeMotif?: boolean; compact?: boolean }
+const { eyebrow, title, description, photo, programmeMotif = false, compact = false } = Astro.props;
+---
+<section class:list={['hero', programmeMotif && 'programme-motif', compact && 'compact-hero']}>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 set:html={title} />
+      {description && <p class="lead">{description}</p>}
+      <slot />
+    </div>
+    {photo ? <div class="hero-photo" style={`background-image:linear-gradient(to top, rgba(7,28,55,.55),transparent),url(${photo});background-size:cover;background-position:center`} /> : <div class="hero-photo" role="img" aria-label="Privremeno mjesto za službenu fotografiju kvarteta"><span>TODO · dodati službenu fotografiju kvarteta</span></div>}
+  </div>
+</section>
+<style>.compact-hero { min-height: 520px; }</style>
