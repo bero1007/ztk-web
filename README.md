@@ -72,6 +72,8 @@ Svaki push na `main` pokreće workflow. Jednokratno u repozitoriju otvorite **Se
 
 Astro `base` je `/ztk-web`, pa sve interne putanje rade na GitHub Pages podmapi.
 
+Na GitHub Free planu Pages za ovaj projekt zahtijeva javni repozitorij. Ako repo ostaje privatan, potreban je GitHub plan koji podržava Pages za privatne repozitorije. Workflow je već spreman i nakon promjene dostupnosti dovoljno ga je ponovno pokrenuti.
+
 ## Kasniji Cloudflare Pages
 
 Povežite repo s Cloudflare Pages, postavite build command `npm run build`, output direktorij `dist` i produkcijsku varijablu `PUBLIC_BOOKING_ENDPOINT`. Za vlastitu domenu promijenite `site` i uklonite `base` u `astro.config.mjs`; aplikacijski linkovi ostat će funkcionalni.
