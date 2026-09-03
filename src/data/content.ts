@@ -118,7 +118,7 @@ export const events: EventItem[] = [
     id: 'tambura-da-camera-zagreb-2026', slug: 'tambura-da-camera-zagreb-2026',
     titleHr: 'Tambura da camera – promocija albuma i 5 godina djelovanja Zagrebačkog tamburaškog kvarteta',
     titleEn: 'Tambura da camera – album presentation and five years of Zagreb Tambura Quartet',
-    date: '2026-09-30', time: '20:00', venue: 'Dvorana Hrvatske matice iseljenika', address: 'Trg Stjepana Radića 3', city: 'Zagreb', country: 'Hrvatska', latitude: 45.8007, longitude: 15.9708,
+    date: '2026-09-30', time: '20:00', venue: 'Dvorana Hrvatske matice iseljenika', address: 'Trg Stjepana Radića 3', city: 'Zagreb', country: 'Hrvatska', latitude: 45.8015214, longitude: 15.9801683,
     programme: 'tambura-da-camera', guestArtists: [], moderator: 'Sonja Mrnjavčić', gallery: [], videos: [],
     repertoireIds: ['uhlik-tambura-da-camera', 'bertic-skica', 'miletic-folklorne-kasacije', 'vlahek-orbital', 'hrenic-musettura', 'novosel-bunjevacka-igra-i-fuga', 'potocnik-cet-r-momka'],
     published: true, digitalProgrammeEnabled: true
