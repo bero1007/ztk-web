@@ -13,4 +13,20 @@ const filters=hr?[['all','Sve'],['original','Originalna djela'],['arrangement','
  const update=()=>{const query=(input?.value||'').toLowerCase().trim();let shown=0;items.forEach(item=>{const matchesText=!query||item.dataset.text?.includes(query);const matchesFilter=active==='all'||item.dataset.tags?.split(' ').includes(active);const visible=!!matchesText&&!!matchesFilter;item.hidden=!visible;if(visible)shown++});if(empty)empty.hidden=shown>0};
  input?.addEventListener('input',update);buttons.forEach(button=>button.addEventListener('click',()=>{active=button.dataset.filter||'all';buttons.forEach(b=>b.classList.toggle('active',b===button));update()}));
 </script>
-<style>.explorer{display:grid;gap:30px}.search{display:grid;gap:8px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.search input{width:100%;border:1px solid var(--color-line);border-radius:var(--radius-md);background:white;padding:1.3rem 1.4rem;color:var(--color-text);font-size:1.1rem;box-shadow:var(--shadow-soft)}.filters{display:flex;flex-wrap:wrap;gap:10px}.filters button{min-height:44px;border:1px solid var(--color-line);border-radius:999px;padding:.65rem .9rem;background:white;color:var(--color-text);font-weight:700;cursor:pointer}.filters button.active,.filters button:hover{background:var(--color-copper);color:white;border-color:var(--color-copper)}.work-list{border-top:1px solid var(--color-line)}.work-list article{display:grid;grid-template-columns:.7fr 1.3fr;gap:24px;padding:20px 8px;border-bottom:1px solid var(--color-line)}.work-list article[hidden]{display:none}.work-list span{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}.work-list a{display:flex;justify-content:space-between;text-decoration:none;font:500 1.45rem var(--serif)}.work-list b{color:var(--color-copper);transition:transform .2s}.work-list a:hover b{transform:translateX(5px)}@media(max-width:600px){.work-list article{grid-template-columns:1fr;gap:4px}.work-list a{font-size:1.3rem}}</style>
+<style>
+  .explorer { display:grid; gap:30px; }
+  .search { display:grid; gap:8px; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; }
+  .search input { width:100%; padding:1.3rem 1.4rem; border:1px solid var(--color-line); border-left:3px solid var(--color-moss-500); border-radius:3px; background:var(--color-paper); color:var(--color-text); font-size:1.1rem; box-shadow:var(--shadow-soft); }
+  .filters { display:flex; flex-wrap:wrap; gap:10px; }
+  .filters button { min-height:44px; padding:.65rem .9rem; border:1px solid var(--color-line); border-radius:999px; background:var(--color-paper); color:var(--color-text); font-weight:700; cursor:pointer; }
+  .filters button.active,.filters button:hover { background:var(--color-copper); border-color:var(--color-copper); color:white; }
+  .work-list { border-top:1px solid var(--color-line); }
+  .work-list article { display:grid; grid-template-columns:.7fr 1.3fr; gap:24px; padding:22px 8px; border-bottom:1px solid var(--color-line); transition:padding .2s ease,background .2s ease; }
+  .work-list article:not([hidden]):hover { padding-inline:14px; background:rgba(228,232,220,.42); }
+  .work-list article[hidden] { display:none; }
+  .work-list span { color:var(--color-muted); font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; }
+  .work-list a { display:flex; justify-content:space-between; text-decoration:none; font:500 1.5rem var(--serif); }
+  .work-list b { color:var(--color-copper); transition:transform .2s; }
+  .work-list a:hover b { transform:translateX(5px); }
+  @media(max-width:600px){.work-list article{grid-template-columns:1fr;gap:4px}.work-list a{font-size:1.3rem}}
+</style>

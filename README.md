@@ -81,3 +81,5 @@ Povežite repo s Cloudflare Pages, postavite build command `npm run build`, outp
 ## Vizualni asseti
 
 Odobreni službeni asseti nalaze se u `public/images/brand`, `public/images/ensemble` i `public/images/album`. Putanje se vode kroz `BASE_URL`, pa rade i na GitHub Pages podmapi. Za nove fotografije koristite izvorne datoteke iz povezane Drive mape; ne generirajte zamjenska lica ili instrumente.
+
+Vizualni sustav u `src/styles/global.css` izveden je iz službenog srebrno-bijelog logotipa, maslinastih tonova fotografija i toplog drveta instrumenata. Primarne su boje mineralna tamnoplava, papirnato svijetla, prigušena maslinasta i kontrolirani bakreni akcent. U headeru i footeru koristi se potpuni originalni logo; njegove SVG putanje nisu redizajnirane, samo je uklonjen suvišan prazan rub radi pravilnog prikaza.

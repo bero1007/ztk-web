@@ -7,4 +7,16 @@ const{lang}=Astro.props as{lang:Lang};const hr=lang==='hr';const r=routes(lang);
  <section class="section"><div class="container album-media"><img src={path('/images/album/tambura-da-camera-cover.webp')} alt="Tambura da camera" loading="lazy" /><div><div class="section-head"><p class="eyebrow">Streaming & social</p><h2>Tambura da camera</h2></div><div class="media-grid">{mediaLinks.map((item,index)=><a href={item.url} target="_blank" rel="noreferrer"><span>{String(index+1).padStart(2,'0')}</span><h3>{item.label}</h3><b>↗</b></a>)}</div></div></div></section>
  <section class="section alt"><div class="container"><div class="section-head"><p class="eyebrow">Video</p><h2>Mozart</h2></div><div class="grid-2">{videos.map(video=><a class="video-card card" href={video.url} target="_blank" rel="noreferrer"><p class="eyebrow">{video.composer}</p><h3><i>{video.work}</i></h3><p>{video.movement}</p><span class="button">YouTube ↗</span></a>)}</div></div></section>
 </BaseLayout>
-<style>.album-media{display:grid;grid-template-columns:minmax(260px,.7fr) 1.3fr;gap:clamp(36px,7vw,90px);align-items:center}.album-media>img{width:100%;box-shadow:0 28px 70px rgba(12,39,75,.16)}.media-grid{border-top:1px solid var(--color-line)}.media-grid>a{display:grid;grid-template-columns:60px 1fr auto;align-items:center;padding:22px 10px;border-bottom:1px solid var(--color-line);text-decoration:none}.media-grid>a span{color:var(--color-copper)}.media-grid>a b{font-size:1.3rem;transition:transform .2s}.media-grid>a:hover b{transform:translate(4px,-4px)}.video-card{display:grid;gap:12px;text-decoration:none}.video-card .button{justify-self:start;margin-top:10px}@media(max-width:720px){.album-media{grid-template-columns:1fr}.album-media>img{max-width:480px}}</style>
+<style>
+  .album-media { display:grid; grid-template-columns:minmax(260px,.7fr) 1.3fr; gap:clamp(38px,7vw,92px); align-items:center; }
+  .album-media>img { width:100%; border:1px solid var(--color-line); box-shadow:0 30px 80px rgba(11,23,34,.18); outline:1px solid rgba(14,31,48,.1); outline-offset:9px; }
+  .media-grid { border-top:1px solid var(--color-line); }
+  .media-grid>a { display:grid; grid-template-columns:60px 1fr auto; align-items:center; padding:23px 10px; border-bottom:1px solid var(--color-line); text-decoration:none; transition:padding .2s ease,background .2s ease; }
+  .media-grid>a:hover { padding-inline:16px; background:rgba(228,232,220,.42); }
+  .media-grid>a span { color:var(--color-copper); font-size:.76rem; letter-spacing:.08em; }
+  .media-grid>a b { font-size:1.3rem; transition:transform .2s; }
+  .media-grid>a:hover b { transform:translate(4px,-4px); }
+  .video-card { display:grid; gap:12px; border-radius:4px; border-top:3px solid var(--color-moss-500); text-decoration:none; }
+  .video-card .button { justify-self:start; margin-top:10px; }
+  @media(max-width:720px){.album-media{grid-template-columns:1fr}.album-media>img{max-width:480px;outline-offset:6px}}
+</style>

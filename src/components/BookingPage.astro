@@ -11,4 +11,13 @@ const{lang}=Astro.props as{lang:Lang};const hr=lang==='hr';const r=routes(lang);
  form?.addEventListener('submit',async(event)=>{event.preventDefault();if(!form.reportValidity())return;const data=Object.fromEntries(new FormData(form).entries());const endpoint=form.dataset.endpoint;if(endpoint){try{const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(!response.ok)throw new Error();if(status)status.textContent=document.documentElement.lang==='hr'?'Upit je uspješno poslan.':'Your enquiry was sent.';form.reset();return}catch{if(status)status.textContent=document.documentElement.lang==='hr'?'Slanje nije uspjelo; otvorit ćemo pripremljeni e-mail.':'Sending failed; we will open a prepared email.'}}
  const lines=Object.entries(data).map(([key,value])=>`${key}: ${value}`);const subject=document.documentElement.lang==='hr'?`Koncertni upit — ${data.organisation}`:`Concert enquiry — ${data.organisation}`;location.href=`mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`});
 </script>
-<style>.booking-form{display:grid;gap:16px}.booking-form label{display:grid;gap:6px;font-size:.78rem;font-weight:700}.booking-form input,.booking-form select,.booking-form textarea{width:100%;border:1px solid var(--color-line);border-radius:var(--radius-sm);background:white;padding:.82rem;color:var(--color-text)}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.booking-form .button{justify-self:start}#form-status{color:var(--color-copper);font-weight:700}@media(max-width:520px){.two{grid-template-columns:1fr}}</style>
+<style>
+  .booking-form { display:grid; gap:18px; border-radius:4px; border-top:3px solid var(--color-moss-500); }
+  .booking-form label { display:grid; gap:7px; color:var(--color-muted); font-size:.75rem; font-weight:700; letter-spacing:.055em; text-transform:uppercase; }
+  .booking-form input,.booking-form select,.booking-form textarea { width:100%; padding:.88rem; border:1px solid var(--color-line); border-radius:2px; background:#fffefa; color:var(--color-text); text-transform:none; letter-spacing:normal; transition:border-color .2s ease,box-shadow .2s ease; }
+  .booking-form input:focus,.booking-form select:focus,.booking-form textarea:focus { border-color:var(--color-moss-700); box-shadow:0 0 0 3px rgba(120,128,100,.14); outline:none; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .booking-form .button { justify-self:start; }
+  #form-status { color:var(--color-copper); font-weight:700; }
+  @media(max-width:520px){.two{grid-template-columns:1fr}}
+</style>
