@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro'; import Hero from '@/components/Hero.astro'; import { programmes,published } from '@/data/content'; import type {Lang} from '@/data/content'; import {path,routes} from '@/lib/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro'; import Hero from '@/components/Hero.astro'; import { programmeWorks,programmes,published,workTitle } from '@/data/content'; import type {Lang} from '@/data/content'; import {path,routes} from '@/lib/i18n';
 const {lang}=Astro.props as {lang:Lang};const r=routes(lang);const hr=lang==='hr';
 ---
 <BaseLayout {lang} title={hr?'Aktualni programi — ZTK':'Current programmes — ZTK'} description={hr?'Aktualni koncertni programi Zagrebačkog tamburaškog kvarteta.':'Current concert programmes by Zagreb Tambura Quartet.'} canonicalPath={r.programmes} alternatePath={hr?'/en/programmes/':'/programi/'}>
  <Hero eyebrow={hr?'Aktualni programi':'Current programmes'} title={hr?'Programi za <em>pozornice</em> koje slušaju.':'Programmes for <em>stages</em> that listen.'} description={hr?'Od Mozarta do suvremene tamburaške komorne glazbe.':'From Mozart to contemporary chamber music for tambura.'} photo="/images/ensemble/jev-03586.webp" photoAlt={hr?'Zagrebački tamburaški kvartet na pozornici':'Zagreb Tambura Quartet on stage'} programmeMotif />
- <section class="section"><div class="container programme-list">{published(programmes).map((program,index)=><article class="programme-card"><div class:list={['programme-visual',program.id==='tambura-da-camera'&&'album']}>{program.image?<img src={path(program.image)} alt={hr?program.titleHr:program.titleEn} loading="lazy" />:<span>{String(index+1).padStart(2,'0')}</span>}</div><div class="stack"><p class="eyebrow">{program.duration|| (hr?'Trajanje po dogovoru':'Duration by arrangement')}</p><h2>{hr?program.titleHr:program.titleEn}</h2><p class="lead">{hr?program.descriptionHr:program.descriptionEn}</p>{program.performers&&<p><strong>{hr?'Izvođači':'Performers'}:</strong> {program.performers}</p>}{program.repertoire&&<ul>{program.repertoire.map(item=><li>{item}</li>)}</ul>}<a class="button" href={path(`${r.booking}?program=${program.id}`)}>{hr?'Rezervirajte ovaj program':'Book this programme'} →</a></div></article>)}</div></section>
+ <section class="section"><div class="container programme-list">{published(programmes).map((program,index)=>{const works=programmeWorks(program);return <article id={`programme-${program.id}`} class="programme-card"><div class:list={['programme-visual',program.id==='tambura-da-camera'&&'album']}>{program.image?<img src={path(program.image)} alt={hr?program.titleHr:program.titleEn} loading="lazy" />:<span>{String(index+1).padStart(2,'0')}</span>}</div><div class="stack"><p class="eyebrow">{program.duration|| (hr?'Trajanje po dogovoru':'Duration by arrangement')}</p><h2>{hr?program.titleHr:program.titleEn}</h2><p class="lead">{hr?program.descriptionHr:program.descriptionEn}</p>{program.performers&&<p><strong>{hr?'Izvođači':'Performers'}:</strong> {program.performers}</p>}{works.length>0&&<ol class="programme-works">{works.map(work=><li><span>{work.composer}</span><a href={path(hr?`/repertoar/${work.slug}/`:`/en/repertoire/${work.slug}/`)}><i>{workTitle(work,lang)}</i></a></li>)}</ol>}<a class="button" href={path(`${r.booking}?program=${program.id}`)}>{hr?'Rezervirajte ovaj program':'Book this programme'} →</a></div></article>})}</div></section>
  </BaseLayout>
 <style>
   .programme-list { display:grid; gap:34px; }
@@ -16,7 +16,10 @@ const {lang}=Astro.props as {lang:Lang};const r=routes(lang);const hr=lang==='hr
   .programme-visual.album { background:var(--color-navy-900); border-radius:3px; }
   .programme-visual.album img { object-fit:cover; filter:none; }
   .programme-card .button { justify-self:start; }
-  .programme-card ul { margin:0; padding-left:1.2rem; }
+  .programme-works { margin:0; padding:0; list-style:none; border-top:1px solid var(--color-line); }
+  .programme-works li { display:grid; gap:2px; padding:12px 0; border-bottom:1px solid var(--color-line); }
+  .programme-works span { color:var(--color-muted); font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; }
+  .programme-works a { font:500 1.08rem var(--serif); text-decoration-color:var(--color-copper); }
   @media(max-width:750px){
     .programme-card { grid-template-columns:1fr; }
     .programme-card:nth-child(even) .programme-visual { order:0; }

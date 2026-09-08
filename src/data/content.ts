@@ -21,10 +21,18 @@ export interface Programme {
   duration?: string;
   descriptionHr: string;
   descriptionEn: string;
-  repertoire?: string[];
+  repertoireIds: string[];
   performers?: string;
   image?: string;
   published: boolean;
+}
+
+export type WorkType = 'original' | 'arrangement' | 'unknown';
+
+export interface WorkMovement {
+  titleHr: string;
+  titleEn: string;
+  duration?: string;
 }
 
 export interface Work {
@@ -32,20 +40,38 @@ export interface Work {
   slug: string;
   composer: string;
   composerDates?: string;
-  title: string;
+  titleHr: string;
+  titleEn: string;
+  workType: WorkType;
   year?: string;
   duration?: string;
-  instrumentation?: string;
+  instrumentationHr?: string;
+  instrumentationEn?: string;
   arranger?: string;
   writtenForZtk: boolean | 'unknown';
-  premiere?: string;
+  premieredByZtk?: boolean;
+  premiereHr?: string;
+  premiereEn?: string;
   dedication?: string;
   descriptionHr?: string;
   descriptionEn?: string;
-  videoUrls: string[];
+  movements?: WorkMovement[];
   album?: string;
   programmeIds: string[];
   tags: string[];
+  published: boolean;
+}
+
+export interface VideoRecord {
+  id: string;
+  workId: string;
+  movementHr: string;
+  movementEn: string;
+  url: string;
+  channel: string;
+  official: boolean;
+  noteHr?: string;
+  noteEn?: string;
   published: boolean;
 }
 
@@ -69,6 +95,8 @@ export interface EventItem {
   descriptionEn?: string;
   ticketUrl?: string;
   heroImage?: string;
+  posterImage?: string;
+  posterOriginal?: string;
   gallery: string[];
   videos: string[];
   repertoireIds: string[];
@@ -127,29 +155,196 @@ export const programmes: Programme[] = [
     descriptionHr: 'Mozartov program za tamburaški kvartet i klarinet.',
     descriptionEn: 'A Mozart programme for tambura quartet and clarinet.',
     performers: 'Zagreb Tambura Quartet & Jan Plevko, clarinet', image: '/images/ensemble/dk-101470.webp',
-    repertoire: ['W. A. Mozart — Divertimento in D major, K. 136: I.; II. Andante; III. Presto', 'W. A. Mozart — String Quartet K. 157', 'W. A. Mozart — Clarinet Quintet K. 581'],
+    repertoireIds: ['mozart-divertimento-k136', 'mozart-string-quartet-k157', 'mozart-clarinet-quintet-k581'],
     published: true
   },
-  { id: 'tambura-da-camera', titleHr: 'Tambura da camera', titleEn: 'Tambura da camera', descriptionHr: 'Album i koncertni program suvremene tamburaške komorne glazbe.', descriptionEn: 'An album and concert programme of contemporary chamber music for tambura.', image: '/images/album/tambura-da-camera-cover.webp', published: true },
-  { id: 'redovni-program', titleHr: 'Redovni koncertni program 2026./2027.', titleEn: 'Regular concert programme 2026/2027', duration: '50 min', descriptionHr: 'Četiri nova djela za tamburaški kvartet, pripremljena za praizvedbu odnosno premijernu izvedbu u gradu domaćinu.', descriptionEn: 'Four new works for tambura quartet, prepared for a world premiere or a first performance in the host city.', repertoire: ['Nikola Vilus — Tamburaški kvartet br. 1', 'Marko Bertić — Skice za tamburaški kvartet', 'Dubravko Palanović — Kvartet za četiri tambure (radni naziv)', 'Richard Boukas — Brazilske refleksije'], image: '/images/ensemble/jev-03494.webp', published: true },
-  { id: 'po-dogovoru', titleHr: 'Program po dogovoru', titleEn: 'Bespoke programme', descriptionHr: 'Program oblikovan u razgovoru s organizatorom, prema kontekstu i publici događaja.', descriptionEn: 'A programme shaped with the organiser for the event, context and audience.', image: '/images/ensemble/dk-101584.webp', published: true }
+  {
+    id: 'tambura-da-camera', titleHr: 'Tambura da camera', titleEn: 'Tambura da camera',
+    descriptionHr: 'Album i koncertni program suvremene tamburaške komorne glazbe.',
+    descriptionEn: 'An album and concert programme of contemporary chamber music for tambura.',
+    repertoireIds: ['vlahek-orbital', 'uhlik-hommage-emil-cossetto', 'novosel-bunjevacka-igra-i-fuga', 'uhlik-tambura-da-camera', 'hrenic-tema-i-varijacije', 'bertic-skica', 'hrenic-musettura'],
+    image: '/images/album/tambura-da-camera-cover.webp', published: true
+  },
+  {
+    id: 'redovni-program', titleHr: 'Redovni koncertni program 2026./2027.', titleEn: 'Regular concert programme 2026/2027', duration: '50 min',
+    descriptionHr: 'Četiri nova djela za tamburaški kvartet, pripremljena za praizvedbu odnosno premijernu izvedbu u gradu domaćinu.',
+    descriptionEn: 'Four new works for tambura quartet, prepared for a world premiere or a first performance in the host city.',
+    repertoireIds: ['vilus-kvartet-br-1', 'bertic-skica', 'palanovic-kvartet', 'boukas-brazilske-refleksije'],
+    image: '/images/ensemble/jev-03494.webp', published: true
+  },
+  {
+    id: 'po-dogovoru', titleHr: 'Program po dogovoru', titleEn: 'Bespoke programme',
+    descriptionHr: 'Program oblikovan u razgovoru s organizatorom, prema kontekstu i publici događaja.',
+    descriptionEn: 'A programme shaped with the organiser for the event, context and audience.',
+    repertoireIds: [], image: '/images/ensemble/dk-101584.webp', published: true
+  }
 ];
 
 export const repertoire: Work[] = [
-  { id: 'uhlik-tambura-da-camera', slug: 'tambura-da-camera', composer: 'Tomislav Uhlik', title: 'Tambura da camera', writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary', 'album'], published: true },
-  { id: 'bertic-skica', slug: 'skica', composer: 'Marko Bertić', title: 'Skica', writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary', 'album'], published: true },
-  { id: 'miletic-folklorne-kasacije', slug: 'folklorne-kasacije', composer: 'Miroslav Miletić', title: 'Folklorne kasacije', writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', '20th', 'album'], published: true },
-  { id: 'vlahek-orbital', slug: 'orbital', composer: 'Bruno Vlahek', title: 'Orbital', writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary', 'album'], published: true },
-  { id: 'hrenic-musettura', slug: 'musettura', composer: 'Jurica Hrenić', title: 'Musettura', writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary', 'album'], published: true },
-  { id: 'novosel-bunjevacka-igra-i-fuga', slug: 'bunjevacka-igra-i-fuga', composer: 'Filip Novosel', title: 'Bunjevačka igra i fuga', writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary', 'album'], published: true },
-  { id: 'potocnik-cet-r-momka', slug: 'cetr-momka-od-iloka', composer: 'Božo Potočnik', title: "Čet'r momka od Iloka", writtenForZtk: 'unknown', videoUrls: [], album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'album'], published: true },
-  { id: 'piazzolla-fuga-y-misterio', slug: 'fuga-y-misterio', composer: 'Astor Piazzolla', title: 'Fuga y misterio', arranger: 'F. Pećarić', writtenForZtk: false, videoUrls: [], programmeIds: [], tags: ['international', 'arrangement', '20th'], published: true },
-  { id: 'vilus-kvartet-br-1', slug: 'tamburaski-kvartet-br-1', composer: 'Nikola Vilus', title: 'Tamburaški kvartet br. 1', writtenForZtk: 'unknown', videoUrls: [], programmeIds: ['redovni-program'], tags: ['croatian', 'contemporary'], published: true },
-  { id: 'palanovic-kvartet', slug: 'kvartet-za-cetiri-tambure', composer: 'Dubravko Palanović', title: 'Kvartet za četiri tambure', writtenForZtk: 'unknown', videoUrls: [], programmeIds: ['redovni-program'], tags: ['croatian', 'contemporary'], published: true },
-  { id: 'boukas-brazilske-refleksije', slug: 'brazilske-refleksije', composer: 'Richard Boukas', title: 'Brazilske refleksije', writtenForZtk: 'unknown', videoUrls: [], programmeIds: ['redovni-program'], tags: ['international', 'contemporary'], published: true },
-  { id: 'mozart-divertimento-k136', slug: 'divertimento-k136', composer: 'W. A. Mozart', title: 'Divertimento in D major, K. 136', writtenForZtk: false, videoUrls: ['https://youtu.be/5V11uYUwgMM', 'https://youtu.be/T-MdsrQy6Nw'], programmeIds: ['mozart'], tags: ['international', 'arrangement', 'classical', 'video'], published: true },
-  { id: 'mozart-string-quartet-k157', slug: 'string-quartet-k157', composer: 'W. A. Mozart', title: 'String Quartet K. 157', writtenForZtk: false, videoUrls: [], programmeIds: ['mozart'], tags: ['international', 'arrangement', 'classical'], published: true },
-  { id: 'mozart-clarinet-quintet-k581', slug: 'clarinet-quintet-k581', composer: 'W. A. Mozart', title: 'Clarinet Quintet K. 581', writtenForZtk: false, videoUrls: [], programmeIds: ['mozart'], tags: ['international', 'arrangement', 'classical'], published: true }
+  {
+    id: 'vlahek-orbital', slug: 'orbital', composer: 'Bruno Vlahek', titleHr: 'Orbital', titleEn: 'Orbital', workType: 'original',
+    duration: '05:23', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2023. · Iz salona Očić, Hrvatski radio, Zagreb', premiereEn: '2023 · From the Očić Salon, Croatian Radio, Zagreb',
+    descriptionHr: 'Zagrebački tamburaški kvartet praizveo je djelo 2023. u koncertnom projektu Iz salona Očić, uz izravan prijenos na Trećem programu Hrvatskoga radija. Snimka je objavljena na albumu Tambura da camera (2025.).',
+    descriptionEn: 'Zagreb Tambura Quartet premiered the work in 2023 in the concert project From the Očić Salon, broadcast live on Croatian Radio’s Third Programme. The recording was released on Tambura da camera (2025).',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'uhlik-hommage-emil-cossetto', slug: 'hommage-a-emil-cossetto', composer: 'Tomislav Uhlik', titleHr: 'Hommage à Emil Cossetto', titleEn: 'Hommage à Emil Cossetto', workType: 'original',
+    duration: '06:58', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown',
+    descriptionHr: 'Skladba je objavljena na albumu Tambura da camera (2025.) i nominirana za nagradu Porin u kategoriji najbolje skladbe klasične glazbe.',
+    descriptionEn: 'The work was released on Tambura da camera (2025) and received a Porin Award nomination in the Best Classical Composition category.',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'novosel-bunjevacka-igra-i-fuga', slug: 'bunjevacka-igra-i-fuga', composer: 'Filip Novosel', titleHr: 'Bunjevačka igra i fuga', titleEn: 'Bunjevačka igra i fuga', workType: 'original',
+    duration: '06:41', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2022. · 22. Tamburaški memorijal Hrvoja Majića, Vinkovci', premiereEn: '2022 · 22nd Hrvoje Majić Tambura Memorial, Vinkovci',
+    descriptionHr: 'Kvartet je djelo praizveo 2022. na 22. Tamburaškom memorijalu Hrvoja Majića u Vinkovcima. Snimka je objavljena na albumu Tambura da camera (2025.).',
+    descriptionEn: 'The quartet premiered the work in 2022 at the 22nd Hrvoje Majić Tambura Memorial in Vinkovci. The recording was released on Tambura da camera (2025).',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'uhlik-tambura-da-camera', slug: 'tambura-da-camera', composer: 'Tomislav Uhlik', titleHr: 'Tambura da camera', titleEn: 'Tambura da camera', workType: 'original',
+    duration: '13:44', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown',
+    movements: [
+      { titleHr: 'I. Allegro', titleEn: 'I. Allegro', duration: '04:17' },
+      { titleHr: 'II. Lentamente – Allegro vivace – Moderato – Tempo I', titleEn: 'II. Lentamente – Allegro vivace – Moderato – Tempo I', duration: '06:42' },
+      { titleHr: 'III. Con moto', titleEn: 'III. Con moto', duration: '02:45' }
+    ],
+    descriptionHr: 'Trostavačna skladba nalazi se na istoimenom prvom samostalnom albumu kvarteta, objavljenom 2025.',
+    descriptionEn: 'This three-movement work appears on the quartet’s first independent album of the same title, released in 2025.',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'hrenic-tema-i-varijacije', slug: 'tema-i-varijacije-u-d-molu', composer: 'Jurica Hrenić', titleHr: 'Tema i varijacije u d-molu', titleEn: 'Theme and Variations in D minor', workType: 'original',
+    duration: '12:57', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown',
+    descriptionHr: 'Skladba je objavljena na albumu Tambura da camera (2025.).', descriptionEn: 'The work was released on Tambura da camera (2025).',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'bertic-skica', slug: 'skica', composer: 'Marko Bertić', titleHr: 'Skica', titleEn: 'Sketch', workType: 'original',
+    duration: '02:05', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2023. · Iz salona Očić, Hrvatski radio, Zagreb', premiereEn: '2023 · From the Očić Salon, Croatian Radio, Zagreb',
+    descriptionHr: 'Zagrebački tamburaški kvartet praizveo je djelo 2023. u koncertnom projektu Iz salona Očić, uz izravan prijenos na Trećem programu Hrvatskoga radija. Snimka je objavljena na albumu Tambura da camera (2025.).',
+    descriptionEn: 'Zagreb Tambura Quartet premiered the work in 2023 in the concert project From the Očić Salon, broadcast live on Croatian Radio’s Third Programme. The recording was released on Tambura da camera (2025).',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera', 'redovni-program'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'hrenic-musettura', slug: 'musettura', composer: 'Jurica Hrenić', titleHr: 'Musettura', titleEn: 'Musettura', workType: 'original',
+    duration: '05:15', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2023. · Iz salona Očić, Hrvatski radio, Zagreb', premiereEn: '2023 · From the Očić Salon, Croatian Radio, Zagreb',
+    descriptionHr: 'Zagrebački tamburaški kvartet praizveo je djelo 2023. u koncertnom projektu Iz salona Očić, uz izravan prijenos na Trećem programu Hrvatskoga radija. Snimka je objavljena na albumu Tambura da camera (2025.).',
+    descriptionEn: 'Zagreb Tambura Quartet premiered the work in 2023 in the concert project From the Očić Salon, broadcast live on Croatian Radio’s Third Programme. The recording was released on Tambura da camera (2025).',
+    album: 'Tambura da camera', programmeIds: ['tambura-da-camera'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'hrenic-pet-varijacija-sarabande', slug: 'pet-varijacija-na-handelov-sarabande', composer: 'Jurica Hrenić', titleHr: 'Pet varijacija na Händelov „Sarabande“', titleEn: 'Five Variations on Handel’s “Sarabande”', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2021. · prvi cjelovečernji koncert ZTK-a, Kutina', premiereEn: '2021 · ZTK’s first full-length concert, Kutina',
+    descriptionHr: 'ZTK je djelo praizveo 2021. u Kutini na svojem prvom cjelovečernjem koncertu.',
+    descriptionEn: 'ZTK premiered the work in Kutina in 2021 at the quartet’s first full-length concert.',
+    programmeIds: [], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'skljarov-nije-pristojno', slug: 'nije-pristojno', composer: 'Helena Skljarov', titleHr: 'Nije pristojno', titleEn: 'Nije pristojno', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet i klavir', instrumentationEn: 'tambura quartet and piano', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2021. · 58. Glazbena tribina HDS-a, Osijek', premiereEn: '2021 · 58th Croatian Composers’ Society Music Tribune, Osijek',
+    descriptionHr: 'ZTK je djelo praizveo 2021. na 58. Glazbenoj tribini Hrvatskog društva skladatelja u Osijeku, uz pijanista Ivana Batoša.',
+    descriptionEn: 'ZTK premiered the work in 2021 at the 58th Croatian Composers’ Society Music Tribune in Osijek, with pianist Ivan Batoš.',
+    programmeIds: [], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'hudulin-katride', slug: 'katride', composer: 'Robert James Hudulin', titleHr: 'Katride', titleEn: 'Katride', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
+    premiereHr: '2025. · detalji izvedbe čekaju potvrdu', premiereEn: '2025 · performance details pending confirmation',
+    descriptionHr: 'Zagrebački tamburaški kvartet praizveo je djelo 2025.', descriptionEn: 'Zagreb Tambura Quartet premiered the work in 2025.',
+    programmeIds: [], tags: ['contemporary'], published: true
+  },
+  {
+    id: 'miletic-folklorne-kasacije', slug: 'folklorne-kasacije', composer: 'Miroslav Miletić', titleHr: 'Folklorne kasacije', titleEn: 'Folklorne kasacije', workType: 'arrangement',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', arranger: 'Franjo Pećarić', writtenForZtk: false,
+    programmeIds: [], tags: ['croatian', '20th'], published: true
+  },
+  {
+    id: 'potocnik-cet-r-momka', slug: 'cetr-momka-od-iloka', composer: 'Božo Potočnik', titleHr: "Čet'r momka od Iloka", titleEn: "Čet'r momka od Iloka", workType: 'unknown',
+    writtenForZtk: 'unknown', programmeIds: [], tags: ['croatian'], published: true
+  },
+  {
+    id: 'piazzolla-fuga-y-misterio', slug: 'fuga-y-misterio', composer: 'Astor Piazzolla', titleHr: 'Fuga y misterio', titleEn: 'Fuga y misterio', workType: 'arrangement',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', arranger: 'Franjo Pećarić', writtenForZtk: false,
+    programmeIds: [], tags: ['international', '20th'], published: true
+  },
+  {
+    id: 'vilus-kvartet-br-1', slug: 'tamburaski-kvartet-br-1', composer: 'Nikola Vilus', titleHr: 'Tamburaški kvartet br. 1', titleEn: 'Tambura Quartet No. 1', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown',
+    movements: [
+      { titleHr: 'I. Largo – Vivo', titleEn: 'I. Largo – Vivo' },
+      { titleHr: 'II. Adagio', titleEn: 'II. Adagio' },
+      { titleHr: 'III. Vivo', titleEn: 'III. Vivo' }
+    ],
+    descriptionHr: 'Trostavačno djelo dio je redovnoga koncertnog programa ZTK-a za sezonu 2026./2027.',
+    descriptionEn: 'This three-movement work is part of ZTK’s regular concert programme for the 2026/2027 season.',
+    programmeIds: ['redovni-program'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'palanovic-kvartet', slug: 'kvartet-za-cetiri-tambure', composer: 'Dubravko Palanović', titleHr: 'Kvartet za četiri tambure (radni naziv)', titleEn: 'Quartet for Four Tamburas (working title)', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: false,
+    premiereHr: 'Praizvedba u pripremi', premiereEn: 'World premiere in preparation',
+    descriptionHr: 'Skladba je dio redovnoga programa za sezonu 2026./2027.; naslov je radni, a praizvedba je u pripremi.',
+    descriptionEn: 'The work is part of the regular 2026/2027 programme; the title is provisional and the world premiere is in preparation.',
+    programmeIds: ['redovni-program'], tags: ['croatian', 'contemporary'], published: true
+  },
+  {
+    id: 'boukas-brazilske-refleksije', slug: 'brazilske-refleksije', composer: 'Richard Boukas', titleHr: 'Brazilske refleksije', titleEn: 'Brazilian Reflections', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: false,
+    premiereHr: 'Praizvedba u pripremi', premiereEn: 'World premiere in preparation',
+    movements: [
+      { titleHr: 'I. Guarânia Coxé', titleEn: 'I. Guarânia Coxé' },
+      { titleHr: 'II. Chorizinho', titleEn: 'II. Chorizinho' },
+      { titleHr: 'III. Maestro Duda', titleEn: 'III. Maestro Duda' }
+    ],
+    descriptionHr: 'Trostavačna suita dio je redovnoga programa za sezonu 2026./2027. i priprema se za praizvedbu.',
+    descriptionEn: 'This three-movement suite is part of the regular 2026/2027 programme and is being prepared for its world premiere.',
+    programmeIds: ['redovni-program'], tags: ['international', 'contemporary'], published: true
+  },
+  {
+    id: 'mozart-divertimento-k136', slug: 'divertimento-k136', composer: 'W. A. Mozart', titleHr: 'Divertimento u D-duru, K. 136', titleEn: 'Divertimento in D major, K. 136', workType: 'arrangement',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', arranger: 'G. Hlebec', writtenForZtk: false,
+    movements: [
+      { titleHr: 'I. Allegro', titleEn: 'I. Allegro' },
+      { titleHr: 'II. Andante', titleEn: 'II. Andante' },
+      { titleHr: 'III. Presto', titleEn: 'III. Presto' }
+    ],
+    descriptionHr: 'Obrada G. Hlebeca dio je Mozartova programa Zagrebačkog tamburaškog kvarteta.',
+    descriptionEn: 'G. Hlebec’s arrangement forms part of Zagreb Tambura Quartet’s Mozart programme.',
+    programmeIds: ['mozart'], tags: ['international', 'classical'], published: true
+  },
+  {
+    id: 'mozart-string-quartet-k157', slug: 'string-quartet-k157', composer: 'W. A. Mozart', titleHr: 'Gudački kvartet br. 4 u C-duru, K. 157', titleEn: 'String Quartet No. 4 in C major, K. 157', workType: 'arrangement',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', arranger: 'Danijel Tomašević', writtenForZtk: false,
+    movements: [
+      { titleHr: 'I. Allegro', titleEn: 'I. Allegro' },
+      { titleHr: 'II. Andante', titleEn: 'II. Andante' },
+      { titleHr: 'III. Presto', titleEn: 'III. Presto' }
+    ],
+    descriptionHr: 'Obrada Danijela Tomaševića dio je Mozartova programa Zagrebačkog tamburaškog kvarteta.',
+    descriptionEn: 'Danijel Tomašević’s arrangement forms part of Zagreb Tambura Quartet’s Mozart programme.',
+    programmeIds: ['mozart'], tags: ['international', 'classical'], published: true
+  },
+  {
+    id: 'mozart-clarinet-quintet-k581', slug: 'clarinet-quintet-k581', composer: 'W. A. Mozart', titleHr: 'Klarinetski kvintet u A-duru, K. 581', titleEn: 'Clarinet Quintet in A major, K. 581', workType: 'arrangement',
+    duration: '32:20', instrumentationHr: 'klarinet i tamburaški kvartet', instrumentationEn: 'clarinet and tambura quartet', arranger: 'Danijel Tomašević', writtenForZtk: false,
+    movements: [
+      { titleHr: 'I. Allegro', titleEn: 'I. Allegro' },
+      { titleHr: 'II. Larghetto', titleEn: 'II. Larghetto' },
+      { titleHr: 'III. Menuetto', titleEn: 'III. Menuetto' },
+      { titleHr: 'IV. Allegretto con variazioni', titleEn: 'IV. Allegretto con variazioni' }
+    ],
+    descriptionHr: 'Obrada Danijela Tomaševića izvodi se s klarinetistom Janom Plevkom u Mozartovu programu kvarteta.',
+    descriptionEn: 'Danijel Tomašević’s arrangement is performed with clarinettist Jan Plevko in the quartet’s Mozart programme.',
+    programmeIds: ['mozart'], tags: ['international', 'classical'], published: true
+  }
 ];
 
 export const events: EventItem[] = [
@@ -158,9 +353,10 @@ export const events: EventItem[] = [
     titleHr: 'Tambura da camera – promocija albuma i 5 godina djelovanja Zagrebačkog tamburaškog kvarteta',
     titleEn: 'Tambura da camera – album presentation and five years of Zagreb Tambura Quartet',
     date: '2026-09-30', time: '20:00', venue: 'Dvorana Hrvatske matice iseljenika', address: 'Trg Stjepana Radića 3', city: 'Zagreb', country: 'Hrvatska', latitude: 45.8015214, longitude: 15.9801683,
-    programme: 'tambura-da-camera', guestArtists: [], moderator: 'Sonja Mrnjavčić', heroImage: '/images/ensemble/jev-03488.webp', gallery: [], videos: [],
-    descriptionHr: 'Promocija albuma uz koncertni program i moderirane razgovore o djelima, suradnji sa skladateljima i pet godina djelovanja kvarteta.',
-    descriptionEn: 'An album presentation combining a concert programme with moderated conversations about the works, composer collaborations and the quartet’s first five years.',
+    programme: 'tambura-da-camera', guestArtists: [], moderator: 'Sonja Mrnjavčić', heroImage: '/images/ensemble/jev-03488.webp',
+    posterImage: '/images/events/tambura-da-camera-promotion-poster.webp', posterOriginal: '/images/events/tambura-da-camera-promotion-poster.png', gallery: [], videos: [],
+    descriptionHr: 'Koncert i razgovor sa skladateljima zastupljenima na albumu, povodom promocije albuma Tambura da camera i pet godina djelovanja Zagrebačkog tamburaškog kvarteta.',
+    descriptionEn: 'A concert and conversation with composers represented on the album, marking the presentation of Tambura da camera and five years of Zagreb Tambura Quartet.',
     repertoireIds: [],
     published: true, digitalProgrammeEnabled: true
   },
@@ -173,9 +369,39 @@ export const events: EventItem[] = [
   { id:'drnis-2025', slug:'drnis-2025', titleHr:'Koncert u crkvi sv. Roka', titleEn:'Concert at St Roch’s Church', date:'2025-08-26', time:'', venue:'Crkva sv. Roka', address:'', city:'Drniš', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false }
 ];
 
-export const videos = [
-  { composer: 'W. A. Mozart', work: 'Divertimento in D major, K. 136', movement: 'II. Andante', url: 'https://youtu.be/5V11uYUwgMM', channel: 'Zagreb Tambura Quartet', official: true },
-  { composer: 'W. A. Mozart', work: 'Divertimento in D major, K. 136', movement: 'III. Presto', url: 'https://youtu.be/T-MdsrQy6Nw', channel: 'Zagreb Tambura Quartet', official: true }
+export const videos: VideoRecord[] = [
+  {
+    id: 'uhlik-tambura-da-camera-ocic', workId: 'uhlik-tambura-da-camera',
+    movementHr: 'Cjelovita izvedba · Iz salona Očić', movementEn: 'Complete performance · From the Očić Salon',
+    url: 'https://www.youtube.com/watch?v=-F8PAvysvdQ', channel: 'Zagreb Tambura Quartet', official: true, published: true
+  },
+  {
+    id: 'uhlik-tambura-da-camera-osijek', workId: 'uhlik-tambura-da-camera',
+    movementHr: 'Cjelovita izvedba · Osijek 2021.', movementEn: 'Complete performance · Osijek 2021',
+    url: 'https://www.youtube.com/watch?v=Q8PbD-U58hQ', channel: 'Tomislav Uhlik', official: false,
+    noteHr: 'Potvrđena izvedba Zagrebačkog tamburaškog kvarteta.', noteEn: 'Verified performance by Zagreb Tambura Quartet.', published: true
+  },
+  {
+    id: 'bertic-skica-ocic', workId: 'bertic-skica', movementHr: 'Cjelovita izvedba', movementEn: 'Complete performance',
+    url: 'https://www.youtube.com/watch?v=-g9ZdkDFUxc', channel: 'Zagreb Tambura Quartet', official: true, published: true
+  },
+  {
+    id: 'miletic-folklorne-kasacije', workId: 'miletic-folklorne-kasacije', movementHr: 'Cjelovita izvedba', movementEn: 'Complete performance',
+    url: 'https://www.youtube.com/watch?v=GALsWbdlZxI', channel: 'Zagreb Tambura Quartet', official: true, published: true
+  },
+  {
+    id: 'vlahek-orbital-hrt', workId: 'vlahek-orbital', movementHr: 'Izvedba uživo · HRT', movementEn: 'Live performance · HRT',
+    url: 'https://www.youtube.com/watch?v=1uCicJj9HZ8', channel: 'Bruno Vlahek', official: false,
+    noteHr: 'Potvrđena izvedba Zagrebačkog tamburaškog kvarteta.', noteEn: 'Verified performance by Zagreb Tambura Quartet.', published: true
+  },
+  {
+    id: 'mozart-k136-andante', workId: 'mozart-divertimento-k136', movementHr: 'II. Andante', movementEn: 'II. Andante',
+    url: 'https://youtu.be/5V11uYUwgMM', channel: 'Zagreb Tambura Quartet', official: true, published: true
+  },
+  {
+    id: 'mozart-k136-presto', workId: 'mozart-divertimento-k136', movementHr: 'III. Presto', movementEn: 'III. Presto',
+    url: 'https://youtu.be/T-MdsrQy6Nw', channel: 'Zagreb Tambura Quartet', official: true, published: true
+  }
 ];
 
 export const mediaLinks = [
@@ -187,4 +413,66 @@ export const mediaLinks = [
 ];
 
 export const published = <T extends { published: boolean }>(items: T[]) => items.filter((item) => item.published);
+export const workTitle = (work: Work, lang: Lang) => lang === 'hr' ? work.titleHr : work.titleEn;
+export const workInstrumentation = (work: Work, lang: Lang) => lang === 'hr' ? work.instrumentationHr : work.instrumentationEn;
+export const workPremiere = (work: Work, lang: Lang) => lang === 'hr' ? work.premiereHr : work.premiereEn;
+export const workVideos = (work: Work | string) => {
+  const workId = typeof work === 'string' ? work : work.id;
+  return published(videos).filter((video) => video.workId === workId);
+};
+export const publishedWorksByIds = (ids: string[]) => ids
+  .map((id) => repertoire.find((work) => work.id === id))
+  .filter((work): work is Work => Boolean(work?.published));
+export const programmeWorks = (programme: Programme) => publishedWorksByIds(programme.repertoireIds);
+export const workFilterTags = (work: Work) => [
+  ...work.tags,
+  work.workType !== 'unknown' ? work.workType : '',
+  work.album ? 'album' : '',
+  workVideos(work).length ? 'video' : '',
+  work.writtenForZtk === true ? 'for-ztk' : '',
+  work.premieredByZtk ? 'premiered-by-ztk' : ''
+].filter(Boolean);
+export const workSearchText = (work: Work) => [
+  work.composer,
+  work.titleHr,
+  work.titleEn,
+  work.arranger,
+  ...(work.movements?.flatMap((movement) => [movement.titleHr, movement.titleEn]) ?? [])
+].filter(Boolean).join(' ').toLocaleLowerCase('hr');
 export const eventIsUpcoming = (event: EventItem, now = new Date()) => new Date(`${event.date}T${event.time || '00:00'}:00`) >= now;
+
+const contentErrors: string[] = [];
+const assertUnique = (label: string, values: string[]) => {
+  const seen = new Set<string>();
+  values.forEach((value) => {
+    if (seen.has(value)) contentErrors.push(`Duplicate ${label}: ${value}`);
+    seen.add(value);
+  });
+};
+
+assertUnique('work id', repertoire.map((work) => work.id));
+assertUnique('work slug', repertoire.map((work) => work.slug));
+assertUnique('programme id', programmes.map((programme) => programme.id));
+assertUnique('event id', events.map((event) => event.id));
+assertUnique('video id', videos.map((video) => video.id));
+
+programmes.forEach((programme) => programme.repertoireIds.forEach((workId) => {
+  const work = repertoire.find((item) => item.id === workId);
+  if (!work) contentErrors.push(`Programme ${programme.id} references missing work ${workId}`);
+  else if (programme.published && !work.published) contentErrors.push(`Published programme ${programme.id} references unpublished work ${workId}`);
+}));
+repertoire.forEach((work) => work.programmeIds.forEach((programmeId) => {
+  if (!programmes.some((programme) => programme.id === programmeId)) contentErrors.push(`Work ${work.id} references missing programme ${programmeId}`);
+}));
+events.forEach((event) => event.repertoireIds.forEach((workId) => {
+  const work = repertoire.find((item) => item.id === workId);
+  if (!work) contentErrors.push(`Event ${event.id} references missing work ${workId}`);
+  else if (event.published && !work.published) contentErrors.push(`Published event ${event.id} references unpublished work ${workId}`);
+}));
+videos.forEach((video) => {
+  const work = repertoire.find((item) => item.id === video.workId);
+  if (!work) contentErrors.push(`Video ${video.id} references missing work ${video.workId}`);
+  else if (video.published && !work.published) contentErrors.push(`Published video ${video.id} references unpublished work ${video.workId}`);
+});
+
+if (contentErrors.length) throw new Error(`Content integrity check failed:\n${contentErrors.join('\n')}`);

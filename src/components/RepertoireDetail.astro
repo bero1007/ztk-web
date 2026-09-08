@@ -1,11 +1,102 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';import Hero from '@/components/Hero.astro';import type{Lang,Work}from '@/data/content';import{path,routes}from '@/lib/i18n';
-const{lang,work}=Astro.props as{lang:Lang;work:Work};const hr=lang==='hr';const r=routes(lang);const canonicalPath=hr?`/repertoar/${work.slug}/`:`/en/repertoire/${work.slug}/`;const alternatePath=hr?`/en/repertoire/${work.slug}/`:`/repertoar/${work.slug}/`;const schema={'@context':'https://schema.org','@type':'MusicComposition',name:work.title,composer:{'@type':'Person',name:work.composer}};
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import {
+  programmes,
+  published,
+  workInstrumentation,
+  workPremiere,
+  workTitle,
+  workVideos
+} from '@/data/content';
+import type { Lang, Work } from '@/data/content';
+import { path, routes } from '@/lib/i18n';
+
+const { lang, work } = Astro.props as { lang: Lang; work: Work };
+const hr = lang === 'hr';
+const r = routes(lang);
+const title = workTitle(work, lang);
+const instrumentation = workInstrumentation(work, lang);
+const premiere = workPremiere(work, lang);
+const videos = workVideos(work);
+const workProgrammes = published(programmes).filter((programme) => work.programmeIds.includes(programme.id));
+const canonicalPath = hr ? `/repertoar/${work.slug}/` : `/en/repertoire/${work.slug}/`;
+const alternatePath = hr ? `/en/repertoire/${work.slug}/` : `/repertoar/${work.slug}/`;
+const description = (hr ? work.descriptionHr : work.descriptionEn) || `${work.composer}: ${title}. ${hr ? 'Djelo u repertoaru Zagrebačkog tamburaškog kvarteta.' : 'A work in Zagreb Tambura Quartet’s repertoire.'}`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicComposition',
+  name: title,
+  alternateName: work.titleHr === work.titleEn ? undefined : (hr ? work.titleEn : work.titleHr),
+  composer: { '@type': 'Person', name: work.composer },
+  inLanguage: lang,
+  isPartOf: work.album ? { '@type': 'MusicAlbum', name: work.album, byArtist: { '@type': 'MusicGroup', name: 'Zagreb Tambura Quartet' } } : undefined
+};
 ---
-<BaseLayout {lang} title={`${work.title} — ${work.composer} — ZTK`} description={`${work.composer}: ${work.title}. ${hr?'Djelo u repertoaru Zagrebačkog tamburaškog kvarteta.':'A work in Zagreb Tambura Quartet’s repertoire.'}`} {canonicalPath} {alternatePath} {schema}>
- <Hero eyebrow={work.composer} title={`<em>${work.title}</em>`} description={hr?'Iz repertoara Zagrebačkog tamburaškog kvarteta.':'From the repertoire of Zagreb Tambura Quartet.'} compact />
- <section class="section"><div class="container grid-2"><div class="section-head"><p class="eyebrow">{hr?'Podaci o djelu':'Work details'}</p><h2>{work.title}</h2></div><dl class="details">{work.arranger&&<><dt>{hr?'Aranžman':'Arrangement'}</dt><dd>{work.arranger}</dd></>}{work.album&&<><dt>Album</dt><dd>{work.album}</dd></>}<dt>{hr?'Pisano za ZTK':'Written for ZTK'}</dt><dd>{work.writtenForZtk==='unknown'?(hr?'Nepotvrđeno':'Unconfirmed'):work.writtenForZtk?(hr?'Da':'Yes'):(hr?'Ne':'No')}</dd><dt>{hr?'Opis':'Programme note'}</dt><dd>{(hr?work.descriptionHr:work.descriptionEn)|| (hr?'Čeka autorizirani sadržaj.':'Awaiting approved copy.')}</dd></dl></div></section>
- {work.videoUrls.length>0&&<section class="section alt"><div class="container"><div class="section-head"><p class="eyebrow">Video</p><h2>{hr?'Slušajte odabrane stavke':'Listen to selected movements'}</h2></div><div class="stack">{work.videoUrls.map((url,i)=><a class="card text-link" href={url} target="_blank" rel="noreferrer">Video {i+1} <span>↗</span></a>)}</div></div></section>}
- <section class="section compact"><div class="container"><a class="button" href={path(r.repertoire)}>← {hr?'Natrag na repertoar':'Back to repertoire'}</a></div></section>
+<BaseLayout {lang} title={`${title} — ${work.composer} — ZTK`} {description} {canonicalPath} {alternatePath} {schema}>
+  <Hero eyebrow={work.composer} title={`<em>${title}</em>`} description={hr ? 'Iz repertoara Zagrebačkog tamburaškog kvarteta.' : 'From the repertoire of Zagreb Tambura Quartet.'} compact />
+  <section class="section">
+    <div class="container work-grid">
+      <div>
+        <div class="section-head">
+          <p class="eyebrow">{hr ? 'Podaci o djelu' : 'Work details'}</p>
+          <h2>{title}</h2>
+        </div>
+        <dl class="details">
+          <dt>{hr ? 'Vrsta' : 'Type'}</dt>
+          <dd>{work.workType === 'original' ? (hr ? 'Izvorno djelo' : 'Original work') : work.workType === 'arrangement' ? (hr ? 'Obrada' : 'Arrangement') : (hr ? 'Čeka potvrdu' : 'Pending confirmation')}</dd>
+          {instrumentation && <><dt>{hr ? 'Instrumentacija' : 'Instrumentation'}</dt><dd>{instrumentation}</dd></>}
+          {work.arranger && <><dt>{hr ? 'Aranžman' : 'Arrangement by'}</dt><dd>{work.arranger}</dd></>}
+          {work.duration && <><dt>{hr ? 'Trajanje' : 'Duration'}</dt><dd>{work.duration}</dd></>}
+          {premiere && <><dt>{work.premieredByZtk ? (hr ? 'Praizvedba ZTK-a' : 'ZTK première') : (hr ? 'Praizvedba' : 'Première')}</dt><dd>{premiere}</dd></>}
+          {work.album && <><dt>Album</dt><dd>{work.album}</dd></>}
+          {workProgrammes.length > 0 && <><dt>{hr ? 'Aktualni programi' : 'Current programmes'}</dt><dd>{workProgrammes.map((programme) => hr ? programme.titleHr : programme.titleEn).join(' · ')}</dd></>}
+          {work.writtenForZtk === true && <><dt>{hr ? 'Pisano za ZTK' : 'Written for ZTK'}</dt><dd>{hr ? 'Da' : 'Yes'}</dd></>}
+        </dl>
+      </div>
+      <div class="work-context">
+        {(hr ? work.descriptionHr : work.descriptionEn) && <div>
+          <p class="eyebrow">{hr ? 'O djelu' : 'About the work'}</p>
+          <p class="lead">{hr ? work.descriptionHr : work.descriptionEn}</p>
+        </div>}
+        {work.movements?.length && <div>
+          <p class="eyebrow">{hr ? 'Stavci' : 'Movements'}</p>
+          <ol class="movements">
+            {work.movements.map((movement) => <li><span>{hr ? movement.titleHr : movement.titleEn}</span>{movement.duration && <time>{movement.duration}</time>}</li>)}
+          </ol>
+        </div>}
+      </div>
+    </div>
+  </section>
+  {videos.length > 0 && <section class="section alt">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">Video</p><h2>{hr ? 'Poslušajte izvedbu' : 'Watch the performance'}</h2></div>
+      <div class="video-grid">
+        {videos.map((video) => <a class="card video-link" href={video.url} target="_blank" rel="noreferrer">
+          <div><p class="eyebrow">{video.official ? (hr ? 'Službeni kanal' : 'Official channel') : (hr ? 'Potvrđena snimka' : 'Verified recording')}</p><h3>{hr ? video.movementHr : video.movementEn}</h3><p>{video.channel}</p></div>
+          <span class="button">YouTube ↗</span>
+        </a>)}
+      </div>
+    </div>
+  </section>}
+  <section class="section compact"><div class="container"><a class="button" href={path(r.repertoire)}>← {hr ? 'Natrag na repertoar' : 'Back to repertoire'}</a></div></section>
 </BaseLayout>
-<style>.details{margin:0}.details dt{margin-top:20px;color:var(--color-muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.details dd{margin:3px 0 0;font-size:1.05rem}.details dd+dt{border-top:1px solid var(--color-line);padding-top:20px}</style>
+<style>
+  .work-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(48px, 8vw, 120px); }
+  .details { margin: 0; }
+  .details dt { margin-top: 20px; color: var(--color-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .details dd { margin: 3px 0 0; font-size: 1.05rem; }
+  .details dd + dt { border-top: 1px solid var(--color-line); padding-top: 20px; }
+  .work-context { display: grid; align-content: start; gap: 48px; padding-top: 6px; }
+  .movements { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-line); }
+  .movements li { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--color-line); }
+  .movements time { color: var(--color-muted); font-variant-numeric: tabular-nums; }
+  .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .video-link { display: flex; align-items: end; justify-content: space-between; gap: 24px; border-radius: 4px; border-top: 3px solid var(--color-moss-500); text-decoration: none; }
+  .video-link .button { flex: none; }
+  @media(max-width:750px) {
+    .work-grid, .video-grid { grid-template-columns: 1fr; }
+    .work-context { gap: 36px; }
+    .video-link { align-items: start; flex-direction: column; }
+  }
+</style>

@@ -1,32 +1,124 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';import Hero from '@/components/Hero.astro';import SubmissionForm from '@/components/SubmissionForm.astro';import{published,repertoire}from '@/data/content';import type{Lang}from '@/data/content';import{path,routes}from '@/lib/i18n';
-const{lang}=Astro.props as{lang:Lang};const hr=lang==='hr';const r=routes(lang);const works=published(repertoire);
-const filters=hr?[['all','Sve'],['original','Originalna djela'],['arrangement','Obrade'],['croatian','Hrvatski skladatelji'],['international','Međunarodni skladatelji'],['classical','Klasicizam'],['20th','20. stoljeće'],['contemporary','21. stoljeće / suvremena'],['video','Video dostupan'],['album','Album'],['for-ztk','Djela pisana za ZTK']]:[['all','All'],['original','Original works'],['arrangement','Arrangements'],['croatian','Croatian composers'],['international','International composers'],['classical','Classical period'],['20th','20th century'],['contemporary','21st century / contemporary'],['video','Video available'],['album','Album'],['for-ztk','Written for ZTK']];
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SubmissionForm from '@/components/SubmissionForm.astro';
+import {
+  published,
+  repertoire,
+  workFilterTags,
+  workSearchText,
+  workTitle,
+  workVideos
+} from '@/data/content';
+import type { Lang } from '@/data/content';
+import { path, routes } from '@/lib/i18n';
+
+const { lang } = Astro.props as { lang: Lang };
+const hr = lang === 'hr';
+const r = routes(lang);
+const works = published(repertoire).sort((a, b) => a.composer.localeCompare(b.composer, lang));
+const filters = hr
+  ? [['all', 'Sve'], ['original', 'Originalna djela'], ['arrangement', 'Obrade'], ['croatian', 'Hrvatski skladatelji'], ['international', 'Međunarodni skladatelji'], ['classical', 'Klasicizam'], ['20th', '20. stoljeće'], ['contemporary', '21. stoljeće / suvremena'], ['video', 'Video dostupan'], ['album', 'Album'], ['premiered-by-ztk', 'Praizveo ZTK'], ['for-ztk', 'Djela pisana za ZTK']]
+  : [['all', 'All'], ['original', 'Original works'], ['arrangement', 'Arrangements'], ['croatian', 'Croatian composers'], ['international', 'International composers'], ['classical', 'Classical period'], ['20th', '20th century'], ['contemporary', '21st century / contemporary'], ['video', 'Video available'], ['album', 'Album'], ['premiered-by-ztk', 'Premièred by ZTK'], ['for-ztk', 'Written for ZTK']];
 ---
-<BaseLayout {lang} title={hr?'Repertoar — ZTK':'Repertoire — ZTK'} description={hr?'Pretražite djela u repertoaru Zagrebačkog tamburaškog kvarteta.':'Explore works in Zagreb Tambura Quartet’s repertoire.'} canonicalPath={r.repertoire} alternatePath={hr?'/en/repertoire/':'/repertoar/'}>
- <Hero eyebrow="Repertoire Explorer" title={hr?'Glazba koju <em>nosimo.</em>':'Music we <em>carry.</em>'} description={hr?'Pretražite skladatelje, djela, programe i dostupne videozapise.':'Search composers, works, programmes and available videos.'} compact />
- <section class="section"><div class="container explorer" data-lang={lang}><label class="search"><span>{hr?'Pretražite repertoar':'Search repertoire'}</span><input id="work-search" type="search" placeholder={hr?'Skladatelj ili djelo…':'Composer or work…'} /></label><div class="filters" role="group" aria-label={hr?'Filtri repertoara':'Repertoire filters'}>{filters.map(([id,label],i)=><button class:list={[i===0&&'active']} data-filter={id} type="button">{label}</button>)}</div><div id="work-list" class="work-list">{works.map(work=><article data-text={`${work.composer} ${work.title}`.toLowerCase()} data-tags={`${work.tags.join(' ')} ${work.writtenForZtk===true?'for-ztk original':''}`}><span>{work.composer}</span><a href={path(hr?`/repertoar/${work.slug}/`:`/en/repertoire/${work.slug}/`)}><i>{work.title}</i><b>→</b></a></article>)}</div><p id="no-results" hidden class="empty-note">{hr?'Nema rezultata za odabrani upit.':'No works match this search.'}</p></div></section>
- <section class="section alt"><div class="container grid-2"><div class="section-head"><p class="eyebrow">Composed for ZTK</p><h2>{hr?'Pišete za tamburaški kvartet?':'Writing for tambura quartet?'}</h2><p class="lead">{hr?'Pošaljite nam svoje djelo. Bez prijenosa datoteka — dovoljan je siguran link.':'Send us your work. No file uploads — a secure link is enough.'}</p></div><SubmissionForm {lang}/></div></section>
+<BaseLayout {lang} title={hr ? 'Repertoar — ZTK' : 'Repertoire — ZTK'} description={hr ? 'Pretražite djela u repertoaru Zagrebačkog tamburaškog kvarteta.' : 'Explore works in Zagreb Tambura Quartet’s repertoire.'} canonicalPath={r.repertoire} alternatePath={hr ? '/en/repertoire/' : '/repertoar/'}>
+  <Hero eyebrow="Repertoire Explorer" title={hr ? 'Glazba koju <em>nosimo.</em>' : 'Music we <em>carry.</em>'} description={hr ? 'Pretražite skladatelje, djela, stavke, aranžere i dostupne videozapise.' : 'Search composers, works, movements, arrangers and available videos.'} compact />
+  <section class="section">
+    <div class="container explorer" data-lang={lang}>
+      <label class="search">
+        <span>{hr ? 'Pretražite repertoar' : 'Search repertoire'}</span>
+        <input id="work-search" type="search" placeholder={hr ? 'Skladatelj, djelo, stavak ili aranžer…' : 'Composer, work, movement or arranger…'} />
+      </label>
+      <div class="filters" role="group" aria-label={hr ? 'Filtri repertoara' : 'Repertoire filters'}>
+        {filters.map(([id, label], index) => <button class:list={[index === 0 && 'active']} data-filter={id} type="button" aria-pressed={index === 0 ? 'true' : 'false'}>{label}</button>)}
+      </div>
+      <p id="result-count" class="result-count" aria-live="polite" data-result-label={hr ? 'djela' : 'works'}>{works.length} {hr ? 'djela' : 'works'}</p>
+      <div id="work-list" class="work-list">
+        {works.map((work) => {
+          const videoCount = workVideos(work).length;
+          return <article data-text={workSearchText(work)} data-tags={workFilterTags(work).join(' ')}>
+            <span class="composer">{work.composer}</span>
+            <div class="work-copy">
+              <a href={path(hr ? `/repertoar/${work.slug}/` : `/en/repertoire/${work.slug}/`)}><i>{workTitle(work, lang)}</i><b aria-hidden="true">→</b></a>
+              <div class="work-meta">
+                {work.workType !== 'unknown' && <span>{work.workType === 'original' ? (hr ? 'izvorno djelo' : 'original work') : (hr ? 'obrada' : 'arrangement')}</span>}
+                {work.duration && <span>{work.duration}</span>}
+                {work.album && <span>{work.album}</span>}
+                {videoCount > 0 && <span>{videoCount} {videoCount === 1 ? 'video' : (hr ? 'videa' : 'videos')}</span>}
+              </div>
+            </div>
+          </article>;
+        })}
+      </div>
+      <p id="no-results" hidden class="empty-note">{hr ? 'Nema rezultata za odabrani upit.' : 'No works match this search.'}</p>
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="container grid-2">
+      <div class="section-head">
+        <p class="eyebrow">Composed for ZTK</p>
+        <h2>{hr ? 'Pišete za tamburaški kvartet?' : 'Writing for tambura quartet?'}</h2>
+        <p class="lead">{hr ? 'Pošaljite nam svoje djelo. Bez prijenosa datoteka — dovoljan je siguran link.' : 'Send us your work. No file uploads — a secure link is enough.'}</p>
+      </div>
+      <SubmissionForm {lang} />
+    </div>
+  </section>
 </BaseLayout>
 <script>
- const input=document.querySelector<HTMLInputElement>('#work-search');const buttons=[...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];const items=[...document.querySelectorAll<HTMLElement>('#work-list article')];const empty=document.querySelector<HTMLElement>('#no-results');let active='all';
- const update=()=>{const query=(input?.value||'').toLowerCase().trim();let shown=0;items.forEach(item=>{const matchesText=!query||item.dataset.text?.includes(query);const matchesFilter=active==='all'||item.dataset.tags?.split(' ').includes(active);const visible=!!matchesText&&!!matchesFilter;item.hidden=!visible;if(visible)shown++});if(empty)empty.hidden=shown>0};
- input?.addEventListener('input',update);buttons.forEach(button=>button.addEventListener('click',()=>{active=button.dataset.filter||'all';buttons.forEach(b=>b.classList.toggle('active',b===button));update()}));
+  const input = document.querySelector<HTMLInputElement>('#work-search');
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const items = [...document.querySelectorAll<HTMLElement>('#work-list article')];
+  const empty = document.querySelector<HTMLElement>('#no-results');
+  const counter = document.querySelector<HTMLElement>('#result-count');
+  let active = 'all';
+
+  const update = () => {
+    const query = (input?.value || '').toLocaleLowerCase('hr').trim();
+    let shown = 0;
+    items.forEach((item) => {
+      const matchesText = !query || item.dataset.text?.includes(query);
+      const matchesFilter = active === 'all' || item.dataset.tags?.split(' ').includes(active);
+      const visible = Boolean(matchesText && matchesFilter);
+      item.hidden = !visible;
+      if (visible) shown += 1;
+    });
+    if (empty) empty.hidden = shown > 0;
+    if (counter) counter.textContent = `${shown} ${counter.dataset.resultLabel}`;
+  };
+
+  input?.addEventListener('input', update);
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    active = button.dataset.filter || 'all';
+    buttons.forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle('active', selected);
+      item.setAttribute('aria-pressed', String(selected));
+    });
+    update();
+  }));
 </script>
 <style>
-  .explorer { display:grid; gap:30px; }
-  .search { display:grid; gap:8px; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; }
-  .search input { width:100%; padding:1.3rem 1.4rem; border:1px solid var(--color-line); border-left:3px solid var(--color-moss-500); border-radius:3px; background:var(--color-paper); color:var(--color-text); font-size:1.1rem; box-shadow:var(--shadow-soft); }
-  .filters { display:flex; flex-wrap:wrap; gap:10px; }
-  .filters button { min-height:44px; padding:.65rem .9rem; border:1px solid var(--color-line); border-radius:999px; background:var(--color-paper); color:var(--color-text); font-weight:700; cursor:pointer; }
-  .filters button.active,.filters button:hover { background:var(--color-copper); border-color:var(--color-copper); color:white; }
-  .work-list { border-top:1px solid var(--color-line); }
-  .work-list article { display:grid; grid-template-columns:.7fr 1.3fr; gap:24px; padding:22px 8px; border-bottom:1px solid var(--color-line); transition:padding .2s ease,background .2s ease; }
-  .work-list article:not([hidden]):hover { padding-inline:14px; background:rgba(228,232,220,.42); }
-  .work-list article[hidden] { display:none; }
-  .work-list span { color:var(--color-muted); font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; }
-  .work-list a { display:flex; justify-content:space-between; text-decoration:none; font:500 1.5rem var(--serif); }
-  .work-list b { color:var(--color-copper); transition:transform .2s; }
-  .work-list a:hover b { transform:translateX(5px); }
-  @media(max-width:600px){.work-list article{grid-template-columns:1fr;gap:4px}.work-list a{font-size:1.3rem}}
+  .explorer { display: grid; gap: 28px; }
+  .search { display: grid; gap: 8px; font-size: .76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+  .search input { width: 100%; padding: 1.3rem 1.4rem; border: 1px solid var(--color-line); border-left: 3px solid var(--color-moss-500); border-radius: 3px; background: var(--color-paper); color: var(--color-text); font-size: 1.1rem; box-shadow: var(--shadow-soft); }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; }
+  .filters button { min-height: 44px; padding: .65rem .9rem; border: 1px solid var(--color-line); border-radius: 999px; background: var(--color-paper); color: var(--color-text); font-weight: 700; cursor: pointer; }
+  .filters button.active, .filters button:hover { background: var(--color-copper); border-color: var(--color-copper); color: white; }
+  .result-count { margin: -8px 0 0; color: var(--color-muted); font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .work-list { border-top: 1px solid var(--color-line); }
+  .work-list article { display: grid; grid-template-columns: .7fr 1.3fr; gap: 24px; padding: 22px 8px; border-bottom: 1px solid var(--color-line); transition: padding .2s ease, background .2s ease; }
+  .work-list article:not([hidden]):hover { padding-inline: 14px; background: rgba(228,232,220,.42); }
+  .work-list article[hidden] { display: none; }
+  .composer { color: var(--color-muted); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+  .work-copy { display: grid; gap: 8px; }
+  .work-copy > a { display: flex; justify-content: space-between; gap: 20px; text-decoration: none; font: 500 1.5rem var(--serif); }
+  .work-copy b { color: var(--color-copper); transition: transform .2s; }
+  .work-copy > a:hover b { transform: translateX(5px); }
+  .work-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--color-muted); font-size: .72rem; letter-spacing: .04em; }
+  .work-meta span + span::before { content: '·'; margin-right: 14px; color: var(--color-copper); }
+  @media(max-width:600px) {
+    .work-list article { grid-template-columns: 1fr; gap: 6px; }
+    .work-copy > a { font-size: 1.3rem; }
+    .work-meta span + span::before { display: none; }
+  }
 </style>
