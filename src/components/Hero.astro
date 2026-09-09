@@ -1,13 +1,14 @@
 ---
 import { path } from '@/lib/i18n';
-interface Props { eyebrow?: string; title: string; description?: string; photo?: string; photoAlt?: string; photoPosition?: string; programmeMotif?: boolean; compact?: boolean }
-const { eyebrow, title, description, photo, photoAlt = '', photoPosition = 'center', programmeMotif = false, compact = false } = Astro.props;
+interface Props { eyebrow?: string; title: string; description?: string; subtitle?: string; photo?: string; photoAlt?: string; photoPosition?: string; programmeMotif?: boolean; compact?: boolean }
+const { eyebrow, title, description, subtitle, photo, photoAlt = '', photoPosition = 'center', programmeMotif = false, compact = false } = Astro.props;
 ---
 <section class:list={['hero', programmeMotif && 'programme-motif', compact && 'compact-hero']}>
   <div class:list={['container','hero-grid',!photo&&'no-photo']}>
     <div class="hero-copy">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h1 set:html={title} />
+      {subtitle && <p class="hero-subtitle">{subtitle}</p>}
       {description && <p class="lead">{description}</p>}
       <slot />
     </div>

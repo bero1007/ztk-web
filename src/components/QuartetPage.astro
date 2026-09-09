@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'; import Hero from '@/components/Hero.astro'; import MemberCard from '@/components/MemberCard.astro';
 import { members, published, ensembleBiography, ensembleHighlights } from '@/data/content'; import type { Lang } from '@/data/content'; import { path, routes } from '@/lib/i18n';
 const { lang }=Astro.props as {lang:Lang}; const r=routes(lang); const hr=lang==='hr';
-const schema = published(members).map((member) => ({'@context':'https://schema.org','@type':'Person',name:member.name,memberOf:{'@type':'MusicGroup',name:'Zagreb Tambura Quartet'}}));
+const schema = published(members).map((member) => ({'@context':'https://schema.org','@type':'Person',name:member.name,memberOf:{'@type':'MusicGroup',name:hr?'Zagrebački tamburaški kvartet':'Zagreb Tambura Quartet'}}));
 ---
 <BaseLayout {lang} title={hr?'Kvartet — Zagrebački tamburaški kvartet':'Quartet — Zagreb Tambura Quartet'} description={hr?'Četiri glazbenika, jedan suvremeni komorni zvuk tambure.':'Four musicians, one contemporary chamber voice for the tambura.'} canonicalPath={r.quartet} alternatePath={hr?'/en/quartet/':'/kvartet/'} {schema}>
   <Hero eyebrow={hr?'Ansambl':'Ensemble'} title={hr?'Četiri glasa.<br><em>Jedan zvuk.</em>':'Four voices.<br><em>One sound.</em>'} description={hr?'Prvi profesionalni tamburaški kvartet u svijetu.':'The world’s first professional tambura quartet.'} photo="/images/ensemble/dk-101664.webp" photoAlt={hr?'Zagrebački tamburaški kvartet uz kameni zid':'Zagreb Tambura Quartet by a stone wall'} />

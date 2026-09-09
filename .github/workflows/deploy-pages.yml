@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
 
 permissions:
   contents: read
@@ -25,6 +27,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - run: npm run check:links
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

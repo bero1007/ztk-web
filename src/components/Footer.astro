@@ -1,26 +1,18 @@
 ---
 import type { Lang } from '@/data/content';
-import { labels, routes, path } from '@/lib/i18n';
-const { lang } = Astro.props as { lang: Lang };
-const r = routes(lang); const l = labels[lang];
+import { routes, path } from '@/lib/i18n';
+const { lang } = Astro.props as {lang:Lang}; const hr=lang==='hr'; const r=routes(lang);
 ---
 <footer>
-  <div class="container footer-grid">
-    <div class="stack"><div class="footer-brand"><span class="footer-logo-window"><img class="footer-logo" src={path('/images/brand/logo-light.svg')} alt="Zagreb Tambura Quartet" /></span></div><h2>{lang === 'hr' ? 'Tradicija u suvremenom izrazu.' : 'Tradition in a contemporary voice.'}</h2></div>
-    <div class="footer-links">
-      <a href={path(r.booking)}>zagreb.tambura.quartet@gmail.com</a>
-      <a href={path(r.privacy)}>{l.privacy}</a>
-      <p>© {new Date().getFullYear()} Zagreb Tambura Quartet</p>
-    </div>
-  </div>
+ <div class="container footer-grid">
+  <a href={path(r.home)} aria-label={hr?'Zagrebački tamburaški kvartet — početna':'Zagreb Tambura Quartet — home'}><img class="footer-logo" src={path('/images/brand/logo-original.png')} alt={hr?'Zagrebački tamburaški kvartet':'Zagreb Tambura Quartet'} width="3188" height="3188" loading="lazy" /></a>
+  <div class="footer-contact"><p class="eyebrow">{hr?'Producent':'Producer'}</p><p>Josip Berend</p><a href="tel:+385994074710">+385 99 407 4710</a><a href="mailto:zagreb.tambura.quartet@gmail.com">zagreb.tambura.quartet@gmail.com</a></div>
+  <div class="footer-meta"><a href={path(r.privacy)}>{hr?'Privatnost':'Privacy'}</a><p>© Zagreb Tambura Quartet, 2026.</p></div>
+ </div>
 </footer>
 <style>
-  footer { position:relative;padding: 92px 0 38px; overflow:hidden;background: #0c1b2b; color: white; border-top:1px solid rgba(231,235,233,.12); }
-  footer::before{content:'';position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--color-copper) 0 11%,transparent 11% 14%,var(--color-moss-500) 14% 38%,transparent 38%)}
-  .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 50px; align-items: end; }
-  h2 { max-width: 700px; font-size: clamp(2.4rem, 5vw, 5rem); }
-  .footer-brand{display:flex;align-items:center}.footer-logo-window{display:block;width:88px;height:127px}.footer-logo{width:100%;height:100%;object-fit:contain}
-  .footer-links { display: grid; gap: 12px; justify-items: end; text-align: right; color: #bdc6c4; font-size: .82rem; }
-  .footer-links a { text-underline-offset: 4px; }
-  @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; } .footer-links { justify-items: start; text-align: left; } }
+footer{padding:40px 0;background:var(--color-navy-950);color:var(--color-paper)}
+.footer-grid{display:grid;grid-template-columns:180px 1fr auto;gap:40px;align-items:center}
+.footer-logo{width:180px;height:180px;object-fit:contain}.footer-contact,.footer-meta{display:grid;gap:8px;font-size:.84rem}.footer-meta{align-self:end;color:var(--color-silver)}a{overflow-wrap:anywhere;text-underline-offset:4px}
+@media(max-width:760px){.footer-grid{grid-template-columns:1fr;gap:24px}.footer-logo{width:150px;height:150px}.footer-meta{padding-top:20px;border-top:1px solid var(--color-line)}}
 </style>

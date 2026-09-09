@@ -30,7 +30,7 @@ const schema = {
   alternateName: work.titleHr === work.titleEn ? undefined : (hr ? work.titleEn : work.titleHr),
   composer: { '@type': 'Person', name: work.composer },
   inLanguage: lang,
-  isPartOf: work.album ? { '@type': 'MusicAlbum', name: work.album, byArtist: { '@type': 'MusicGroup', name: 'Zagreb Tambura Quartet' } } : undefined
+  isPartOf: work.album ? { '@type': 'MusicAlbum', name: work.album, byArtist: { '@type': 'MusicGroup', name: hr?'Zagrebački tamburaški kvartet':'Zagreb Tambura Quartet' } } : undefined
 };
 ---
 <BaseLayout {lang} title={`${title} — ${work.composer} — ZTK`} {description} {canonicalPath} {alternatePath} {schema}>
@@ -43,8 +43,10 @@ const schema = {
           <h2>{title}</h2>
         </div>
         <dl class="details">
-          <dt>{hr ? 'Vrsta' : 'Type'}</dt>
-          <dd>{work.workType === 'original' ? (hr ? 'Izvorno djelo' : 'Original work') : work.workType === 'arrangement' ? (hr ? 'Obrada' : 'Arrangement') : (hr ? 'Čeka potvrdu' : 'Pending confirmation')}</dd>
+          <dt>{hr ? 'Skladatelj' : 'Composer'}</dt><dd>{work.composer}</dd>
+          {work.year && <><dt>{hr ? 'Godina nastanka' : 'Year composed'}</dt><dd>{work.year}</dd></>}
+          {work.workType !== 'unknown' && <><dt>{hr ? 'Vrsta' : 'Type'}</dt>
+          <dd>{work.workType === 'original' ? (hr ? 'Izvorno djelo' : 'Original work') : work.workType === 'arrangement' ? (hr ? 'Obrada' : 'Arrangement') : ''}</dd></>}
           {instrumentation && <><dt>{hr ? 'Instrumentacija' : 'Instrumentation'}</dt><dd>{instrumentation}</dd></>}
           {work.arranger && <><dt>{hr ? 'Aranžman' : 'Arrangement by'}</dt><dd>{work.arranger}</dd></>}
           {work.duration && <><dt>{hr ? 'Trajanje' : 'Duration'}</dt><dd>{work.duration}</dd></>}
@@ -73,7 +75,7 @@ const schema = {
       <div class="section-head"><p class="eyebrow">Video</p><h2>{hr ? 'Poslušajte izvedbu' : 'Watch the performance'}</h2></div>
       <div class="video-grid">
         {videos.map((video) => <a class="card video-link" href={video.url} target="_blank" rel="noreferrer">
-          <div><p class="eyebrow">{video.official ? (hr ? 'Službeni kanal' : 'Official channel') : (hr ? 'Potvrđena snimka' : 'Verified recording')}</p><h3>{hr ? video.movementHr : video.movementEn}</h3><p>{video.channel}</p></div>
+          <div><p class="eyebrow">{video.official ? (hr ? 'Službeni kanal' : 'Official channel') : (hr ? 'Snimka izvedbe' : 'Performance recording')}</p><h3>{hr ? video.movementHr : video.movementEn}</h3><p>{hr&&video.channel==='Zagreb Tambura Quartet'?'Zagrebački tamburaški kvartet':video.channel}</p></div>
           <span class="button">YouTube ↗</span>
         </a>)}
       </div>

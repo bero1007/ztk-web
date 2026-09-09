@@ -13,3 +13,5 @@ export const routes = (lang: Lang) => lang === 'hr'
   : { home: '/en/', quartet: '/en/quartet/', programmes: '/en/programmes/', events: '/en/events/', repertoire: '/en/repertoire/', media: '/en/media/', booking: '/en/booking/', privacy: '/en/privacy/' };
 
 export const formatDate = (date: string, lang: Lang) => new Intl.DateTimeFormat(lang === 'hr' ? 'hr-HR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
+
+export const countryLabel=(country:string,lang:Lang)=>lang==='hr'?country:({'Hrvatska':'Croatia','Slovenija':'Slovenia','Malezija':'Malaysia','Švicarska':'Switzerland','Njemačka':'Germany','Kanada':'Canada'} as Record<string,string>)[country]||country;

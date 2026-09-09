@@ -17,7 +17,7 @@ Upravljačka tablica repertoara je [ZTK – javni repertoar za web](https://docs
 
 ## Lokalni razvoj
 
-Potrebni su Node.js 20+ i npm.
+Potrebni su Node.js 22.12+ i npm.
 
 ```sh
 npm install
@@ -69,7 +69,7 @@ Endpoint treba prihvatiti JSON `POST`. Kasnije ga je moguće zamijeniti Cloudfla
 
 ## GitHub Pages
 
-Svaki push na `main` pokreće workflow. Jednokratno u repozitoriju otvorite **Settings → Pages → Build and deployment → Source** i odaberite **GitHub Actions**. Preview će biti na:
+Svaki push na `main` pokreće workflow. Dnevni build u 02:15 UTC osvježava podjelu nadolazećih i prošlih događaja (raspored GitHub Actions može kasniti). Jednokratno u repozitoriju otvorite **Settings → Pages → Build and deployment → Source** i odaberite **GitHub Actions**. Preview će biti na:
 
 `https://bero1007.github.io/ztk-web/`
 
@@ -85,4 +85,22 @@ Povežite repo s Cloudflare Pages, postavite build command `npm run build`, outp
 
 Odobreni službeni asseti nalaze se u `public/images/brand`, `public/images/ensemble`, `public/images/album` i `public/images/events`. Putanje se vode kroz `BASE_URL`, pa rade i na GitHub Pages podmapi. Za nove fotografije i plakate koristite izvorne datoteke iz povezane Drive mape ili povezane ZTK e-pošte; ne generirajte zamjenska lica ili instrumente.
 
-Vizualni sustav u `src/styles/global.css` izveden je iz službenog srebrno-bijelog logotipa, maslinastih tonova fotografija i toplog drveta instrumenata. Primarne su boje mineralna tamnoplava, papirnato svijetla, prigušena maslinasta i kontrolirani bakreni akcent. U headeru i footeru koristi se potpuni originalni logo; njegove SVG putanje nisu redizajnirane, samo je uklonjen suvišan prazan rub radi pravilnog prikaza.
+Vizualni sustav u `src/styles/global.css` izveden je iz službenog srebrno-bijelog logotipa, maslinastih tonova fotografija i toplog drveta instrumenata. Primarne su boje mineralna tamnoplava, papirnato svijetla, prigušena maslinasta i kontrolirani bakreni akcent. U headeru i footeru koristi se potpuni originalni logo; izvorna PNG datoteka ostaje neizmijenjena, a CSS prilagođava samo vidljivi prozor praznih rubova.
+## Javna verzija — rujan 2026.
+
+- Fotografije imaju CSS fade bez ukrasnih okvira; album ima zasebnu zvjezdanu/srebrnu vizualnu temu.
+- Izvorni PNG logotipa koristi se u zaglavlju i podnožju, bez prepisivanja teksta.
+- Fontovi Cormorant Garamond i Manrope poslužuju se lokalno iz paketa Fontsource (OFL).
+- Redovni program sezone je prvi i istaknuti; slijede Mozart i Tambura da camera.
+- `src/data/places.ts` sadrži potvrđena koncertna odredišta. Koordinate su približna središta gradova, ne izmišljene dvorane. Podaci događaja na istome mjestu grupiraju se u popup.
+- Karta se učitava nakon klika, a tekstualni popis mjesta dostupan je i bez nje.
+- Arhiva se filtrira po godini, državi, gradu, programu i gostu, s poništavanjem i praznim rezultatom.
+- Višednevna gostovanja koriste `endDate`. Datum se uspoređuje u zoni Europe/Zagreb.
+- Nepoznate godine nastanka, opisi, prazne galerije i video sekcije nisu javni placeholderi.
+- Zajednička logika obrazaca je u `src/lib/forms.ts`; mailto koristi prevedene nazive polja i puni naziv programa.
+- Prije uključivanja poslužiteljskog booking endpointa ažurirajte obavijest o privatnosti prema stvarnom procesoru, pravnoj osnovi i čuvanju podataka.
+- Produkcijski izvori i uredničke nedoumice: [provjera sadržaja](docs/PUBLIC_CONTENT_REVIEW.md).
+
+### Provjere
+
+`npm run build` provjerava tipove i stvara statičke stranice. `npm run check:links` provjerava interne href/src putanje. Vizualni pregledi i lokalni testovi spremaju se u ignoriranu mapu `screenshots/`, ne u javni build.

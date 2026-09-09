@@ -19,6 +19,8 @@ export interface Programme {
   titleHr: string;
   titleEn: string;
   duration?: string;
+  durationEn?: string;
+  performersHr?: string;
   descriptionHr: string;
   descriptionEn: string;
   repertoireIds: string[];
@@ -82,6 +84,11 @@ export interface EventItem {
   titleEn: string;
   date: string;
   time: string;
+  endDate?: string;
+  subtitleHr?: string;
+  subtitleEn?: string;
+  durationHr?: string;
+  durationEn?: string;
   venue: string;
   address: string;
   city: string;
@@ -145,13 +152,13 @@ export const ensembleBiography = {
 };
 
 export const ensembleHighlights = {
-  hr: ['Grand Prix i Zlatna plaketa s najvećom pohvalom, Osijek 2022.', 'Prva nagrada na 1er IMC – Les Musicales du Centre, Francuska 2022.', 'Turneja u Argentini te gostovanja u Njemačkoj i Kanadi.', 'Album Tambura da camera (2025.) i nominacija za nagradu Porin.'],
-  en: ['Grand Prix and Gold Plaque with highest praise, Osijek 2022.', 'First Prize at 1er IMC – Les Musicales du Centre, France 2022.', 'Tour in Argentina and guest performances in Germany and Canada.', 'Tambura da camera album (2025) and a Porin Award nomination.']
+  hr: ['Grand Prix i Zlatna plaketa s najvećom pohvalom, Osijek 2022.', 'Prva nagrada na 1er IMC – Les Musicales du Centre, Francuska 2022.', 'Turneja u Argentini te gostovanja u Njemačkoj i Kanadi.', 'Album Tambura da camera (2025.) i nominacija skladbe Hommage à Emil Cossetto Tomislava Uhlika za nagradu Porin.'],
+  en: ['Grand Prix and Gold Plaque with highest praise, Osijek 2022.', 'First Prize at 1er IMC – Les Musicales du Centre, France 2022.', 'Tour in Argentina and guest performances in Germany and Canada.', 'Tambura da camera (2025), featuring Tomislav Uhlik’s Porin-nominated Hommage à Emil Cossetto.']
 };
 
 export const programmes: Programme[] = [
   {
-    id: 'mozart', titleHr: 'Mozart', titleEn: 'Mozart', duration: 'cca 60 min',
+    id: 'mozart', titleHr: 'Mozart', titleEn: 'Mozart', duration: 'oko 60 min', durationEn: 'approx. 60 min', performersHr: 'Zagrebački tamburaški kvartet i Jan Plevko, klarinet',
     descriptionHr: 'Mozartov program za tamburaški kvartet i klarinet.',
     descriptionEn: 'A Mozart programme for tambura quartet and clarinet.',
     performers: 'Zagreb Tambura Quartet & Jan Plevko, clarinet', image: '/images/ensemble/dk-101470.webp',
@@ -167,8 +174,8 @@ export const programmes: Programme[] = [
   },
   {
     id: 'redovni-program', titleHr: 'Redovni koncertni program 2026./2027.', titleEn: 'Regular concert programme 2026/2027', duration: '50 min',
-    descriptionHr: 'Četiri nova djela za tamburaški kvartet, pripremljena za praizvedbu odnosno premijernu izvedbu u gradu domaćinu.',
-    descriptionEn: 'Four new works for tambura quartet, prepared for a world premiere or a first performance in the host city.',
+    descriptionHr: 'Program sezone 2026./2027. okuplja djela Nikole Vilusa, Marka Bertića, Dubravka Palanovića i Richarda Boukasa, pisana za Zagrebački tamburaški kvartet.',
+    descriptionEn: 'The 2026/2027 season programme brings together works by Nikola Vilus, Marko Bertić, Dubravko Palanović and Richard Boukas, written for Zagreb Tambura Quartet.',
     repertoireIds: ['vilus-kvartet-br-1', 'bertic-skica', 'palanovic-kvartet', 'boukas-brazilske-refleksije'],
     image: '/images/ensemble/jev-03494.webp', published: true
   },
@@ -179,6 +186,8 @@ export const programmes: Programme[] = [
     repertoireIds: [], image: '/images/ensemble/dk-101584.webp', published: true
   }
 ];
+
+programmes.sort((a, b) => ['redovni-program', 'mozart', 'tambura-da-camera', 'po-dogovoru'].indexOf(a.id) - ['redovni-program', 'mozart', 'tambura-da-camera', 'po-dogovoru'].indexOf(b.id));
 
 export const repertoire: Work[] = [
   {
@@ -224,7 +233,7 @@ export const repertoire: Work[] = [
   },
   {
     id: 'bertic-skica', slug: 'skica', composer: 'Marko Bertić', titleHr: 'Skica', titleEn: 'Sketch', workType: 'original',
-    duration: '02:05', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
+    duration: '02:05', instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: true, premieredByZtk: true,
     premiereHr: '2023. · Iz salona Očić, Hrvatski radio, Zagreb', premiereEn: '2023 · From the Očić Salon, Croatian Radio, Zagreb',
     descriptionHr: 'Zagrebački tamburaški kvartet praizveo je djelo 2023. u koncertnom projektu Iz salona Očić, uz izravan prijenos na Trećem programu Hrvatskoga radija. Snimka je objavljena na albumu Tambura da camera (2025.).',
     descriptionEn: 'Zagreb Tambura Quartet premiered the work in 2023 in the concert project From the Očić Salon, broadcast live on Croatian Radio’s Third Programme. The recording was released on Tambura da camera (2025).',
@@ -257,7 +266,7 @@ export const repertoire: Work[] = [
   {
     id: 'hudulin-katride', slug: 'katride', composer: 'Robert James Hudulin', titleHr: 'Katride', titleEn: 'Katride', workType: 'original',
     instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: true,
-    premiereHr: '2025. · detalji izvedbe čekaju potvrdu', premiereEn: '2025 · performance details pending confirmation',
+    premiereHr: '2025.', premiereEn: '2025',
     descriptionHr: 'Zagrebački tamburaški kvartet praizveo je djelo 2025.', descriptionEn: 'Zagreb Tambura Quartet premiered the work in 2025.',
     programmeIds: [], tags: ['contemporary'], published: true
   },
@@ -277,7 +286,7 @@ export const repertoire: Work[] = [
   },
   {
     id: 'vilus-kvartet-br-1', slug: 'tamburaski-kvartet-br-1', composer: 'Nikola Vilus', titleHr: 'Tamburaški kvartet br. 1', titleEn: 'Tambura Quartet No. 1', workType: 'original',
-    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: true,
     movements: [
       { titleHr: 'I. Largo – Vivo', titleEn: 'I. Largo – Vivo' },
       { titleHr: 'II. Adagio', titleEn: 'II. Adagio' },
@@ -288,28 +297,26 @@ export const repertoire: Work[] = [
     programmeIds: ['redovni-program'], tags: ['croatian', 'contemporary'], published: true
   },
   {
-    id: 'palanovic-kvartet', slug: 'kvartet-za-cetiri-tambure', composer: 'Dubravko Palanović', titleHr: 'Kvartet za četiri tambure (radni naziv)', titleEn: 'Quartet for Four Tamburas (working title)', workType: 'original',
-    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: false,
-    premiereHr: 'Praizvedba u pripremi', premiereEn: 'World premiere in preparation',
-    descriptionHr: 'Skladba je dio redovnoga programa za sezonu 2026./2027.; naslov je radni, a praizvedba je u pripremi.',
-    descriptionEn: 'The work is part of the regular 2026/2027 programme; the title is provisional and the world premiere is in preparation.',
+    id: 'palanovic-kvartet', slug: 'kvartet-za-cetiri-tambure', composer: 'Dubravko Palanović', titleHr: 'Kvartet za četiri tambure', titleEn: 'Quartet for Four Tamburas', workType: 'original',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: true, premieredByZtk: false,
+    descriptionHr: 'Djelo za tamburaški kvartet dio je koncertnog programa sezone 2026./2027.',
+    descriptionEn: 'This work for tambura quartet forms part of the 2026/2027 season programme.',
     programmeIds: ['redovni-program'], tags: ['croatian', 'contemporary'], published: true
   },
   {
     id: 'boukas-brazilske-refleksije', slug: 'brazilske-refleksije', composer: 'Richard Boukas', titleHr: 'Brazilske refleksije', titleEn: 'Brazilian Reflections', workType: 'original',
-    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: 'unknown', premieredByZtk: false,
-    premiereHr: 'Praizvedba u pripremi', premiereEn: 'World premiere in preparation',
+    instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', writtenForZtk: true, premieredByZtk: false,
     movements: [
       { titleHr: 'I. Guarânia Coxé', titleEn: 'I. Guarânia Coxé' },
       { titleHr: 'II. Chorizinho', titleEn: 'II. Chorizinho' },
       { titleHr: 'III. Maestro Duda', titleEn: 'III. Maestro Duda' }
     ],
-    descriptionHr: 'Trostavačna suita dio je redovnoga programa za sezonu 2026./2027. i priprema se za praizvedbu.',
-    descriptionEn: 'This three-movement suite is part of the regular 2026/2027 programme and is being prepared for its world premiere.',
+    descriptionHr: 'Trostavačna suita pisana za Zagrebački tamburaški kvartet dio je koncertnog programa sezone 2026./2027.',
+    descriptionEn: 'This three-movement suite, written for Zagreb Tambura Quartet, forms part of the 2026/2027 season programme.',
     programmeIds: ['redovni-program'], tags: ['international', 'contemporary'], published: true
   },
   {
-    id: 'mozart-divertimento-k136', slug: 'divertimento-k136', composer: 'W. A. Mozart', titleHr: 'Divertimento u D-duru, K. 136', titleEn: 'Divertimento in D major, K. 136', workType: 'arrangement',
+    year: '1772', id: 'mozart-divertimento-k136', slug: 'divertimento-k136', composer: 'W. A. Mozart', titleHr: 'Divertimento u D-duru, K. 136', titleEn: 'Divertimento in D major, K. 136', workType: 'arrangement',
     instrumentationHr: 'tamburaški kvartet', instrumentationEn: 'tambura quartet', arranger: 'G. Hlebec', writtenForZtk: false,
     movements: [
       { titleHr: 'I. Allegro', titleEn: 'I. Allegro' },
@@ -333,7 +340,7 @@ export const repertoire: Work[] = [
     programmeIds: ['mozart'], tags: ['international', 'classical'], published: true
   },
   {
-    id: 'mozart-clarinet-quintet-k581', slug: 'clarinet-quintet-k581', composer: 'W. A. Mozart', titleHr: 'Klarinetski kvintet u A-duru, K. 581', titleEn: 'Clarinet Quintet in A major, K. 581', workType: 'arrangement',
+    year: '1789', id: 'mozart-clarinet-quintet-k581', slug: 'clarinet-quintet-k581', composer: 'W. A. Mozart', titleHr: 'Klarinetski kvintet u A-duru, K. 581', titleEn: 'Clarinet Quintet in A major, K. 581', workType: 'arrangement',
     duration: '32:20', instrumentationHr: 'klarinet i tamburaški kvartet', instrumentationEn: 'clarinet and tambura quartet', arranger: 'Danijel Tomašević', writtenForZtk: false,
     movements: [
       { titleHr: 'I. Allegro', titleEn: 'I. Allegro' },
@@ -350,24 +357,464 @@ export const repertoire: Work[] = [
 export const events: EventItem[] = [
   {
     id: 'tambura-da-camera-zagreb-2026', slug: 'tambura-da-camera-zagreb-2026',
-    titleHr: 'Tambura da camera – promocija albuma i 5 godina djelovanja Zagrebačkog tamburaškog kvarteta',
-    titleEn: 'Tambura da camera – album presentation and five years of Zagreb Tambura Quartet',
+    titleHr: 'Tambura da camera - promocija albuma',
+    titleEn: 'Tambura da camera - album presentation',
+    subtitleHr: '5 godina djelovanja Zagrebačkog tamburaškog kvarteta', subtitleEn: 'Five years of Zagreb Tambura Quartet',
+    durationHr: 'do 60 minuta', durationEn: 'up to 60 minutes',
     date: '2026-09-30', time: '20:00', venue: 'Dvorana Hrvatske matice iseljenika', address: 'Trg Stjepana Radića 3', city: 'Zagreb', country: 'Hrvatska', latitude: 45.8015214, longitude: 15.9801683,
     programme: 'tambura-da-camera', guestArtists: [], moderator: 'Sonja Mrnjavčić', heroImage: '/images/ensemble/jev-03488.webp',
     posterImage: '/images/events/tambura-da-camera-promotion-poster.webp', posterOriginal: '/images/events/tambura-da-camera-promotion-poster.png', gallery: [], videos: [],
     descriptionHr: 'Koncert i razgovor sa skladateljima zastupljenima na albumu, povodom promocije albuma Tambura da camera i pet godina djelovanja Zagrebačkog tamburaškog kvarteta.',
     descriptionEn: 'A concert and conversation with composers represented on the album, marking the presentation of Tambura da camera and five years of Zagreb Tambura Quartet.',
     repertoireIds: [],
-    published: true, digitalProgrammeEnabled: true
+    published: true, digitalProgrammeEnabled: false
   },
   { id:'iz-salona-ocic-2023', slug:'iz-salona-ocic-2023', titleHr:'Iz salona Očić', titleEn:'From the Očić Salon', date:'2023-06-15', time:'', venue:'Salon Očić', address:'', city:'Zagreb', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:['vlahek-orbital','bertic-skica','hrenic-musettura'], descriptionHr:'Koncertno gostovanje uz izravan prijenos na Trećem programu Hrvatskog radija i tri praizvedbe.', descriptionEn:'A concert broadcast live on Croatian Radio’s Third Programme, featuring three world premieres.', published:true, digitalProgrammeEnabled:false },
-  { id:'sancta-barbara-2023', slug:'sancta-barbara-2023', titleHr:'5. Festival drvenih kapela Sancta Barbara', titleEn:'5th Sancta Barbara Festival of Wooden Chapels', date:'2023-06-26', time:'', venue:'Kapela sv. Barbare', address:'', city:'Velika Mlaka', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false },
+  { id:'sancta-barbara-2023', slug:'sancta-barbara-2023', titleHr:'5. Festival drvenih kapela Sancta Barbara', titleEn:'5th Sancta Barbara Festival of Wooden Chapels', date:'2023-06-25', time:'', venue:'Kapela sv. Barbare', address:'', city:'Velika Mlaka', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false },
   { id:'darko-lukic-2024', slug:'darko-lukic-2024', titleHr:'58. Tribina „Darko Lukić”', titleEn:'58th Darko Lukić Recital Series', date:'2024-10-20', time:'', venue:'Koncertna dvorana Glazbene škole Elly Bašić', address:'', city:'Zagreb', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false },
   { id:'miletić-days-2024', slug:'dani-miroslava-miletica-2024', titleHr:'24. Dani glazbe Miroslava Miletića', titleEn:'24th Miroslav Miletić Music Days', date:'2024-11-08', time:'', venue:'Dom INA Rafinerije', address:'', city:'Sisak', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:['miletic-folklorne-kasacije'], published:true, digitalProgrammeEnabled:false },
   { id:'kuca-tambure-2024', slug:'kuca-tambure-2024', titleHr:'Koncert u Kući tambure', titleEn:'Concert at the House of Tambura', date:'2024-12-05', time:'', venue:'Kuća tambure – slavonska glazbena čitanka', address:'', city:'Slavonski Brod', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false },
-  { id:'rab-2025', slug:'rab-2025', titleHr:'Koncert u crkvi sv. Križa', titleEn:'Concert at the Church of the Holy Cross', date:'2025-08-25', time:'', venue:'Crkva sv. Križa', address:'', city:'Rab', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false },
+  { id:'rab-2025', slug:'rab-2025', titleHr:'Koncert u crkvi sv. Križa', titleEn:'Concert at the Church of the Holy Cross', date:'2025-08-28', time:'', venue:'Crkva sv. Križa', address:'', city:'Rab', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false },
   { id:'drnis-2025', slug:'drnis-2025', titleHr:'Koncert u crkvi sv. Roka', titleEn:'Concert at St Roch’s Church', date:'2025-08-26', time:'', venue:'Crkva sv. Roka', address:'', city:'Drniš', country:'Hrvatska', guestArtists:[], gallery:[], videos:[], repertoireIds:[], published:true, digitalProgrammeEnabled:false }
 ];
+
+// Public performance entries only; rehearsals, private travel and contact notes are excluded.
+events.push(...[
+  {
+    "id": "malezija-2026",
+    "slug": "malezija-2026",
+    "titleHr": "Gostovanje u Maleziji",
+    "titleEn": "Guest performances in Malaysia",
+    "date": "2026-10-04",
+    "endDate": "2026-10-08",
+    "time": "",
+    "city": "",
+    "country": "Malezija",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "uhlik-muza-2026",
+    "slug": "uhlik-muza-2026",
+    "titleHr": "Tomislav Uhlik – 70. rođendan",
+    "titleEn": "Tomislav Uhlik – 70th birthday",
+    "date": "2026-11-11",
+    "time": "20:00",
+    "city": "Zagreb",
+    "country": "Hrvatska",
+    "venue": "Dvorana Bersa, Muzička akademija Sveučilišta u Zagrebu",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "svicarska-2027",
+    "slug": "svicarska-2027",
+    "titleHr": "Gostovanje u Švicarskoj",
+    "titleEn": "Guest performances in Switzerland",
+    "date": "2027-04-10",
+    "endDate": "2027-04-13",
+    "time": "",
+    "city": "",
+    "country": "Švicarska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "mbz-2027",
+    "slug": "mbz-2027",
+    "titleHr": "Muzički biennale Zagreb",
+    "titleEn": "Music Biennale Zagreb",
+    "date": "2027-04-15",
+    "time": "20:00",
+    "city": "Zagreb",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "hgz-leopold-2027",
+    "slug": "hgz-leopold-2027",
+    "titleHr": "Koncert uz Sinišu Leopolda",
+    "titleEn": "Concert with Siniša Leopold",
+    "date": "2027-06-10",
+    "time": "19:00",
+    "city": "Zagreb",
+    "country": "Hrvatska",
+    "venue": "Hrvatski glazbeni zavod",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "grubisno-polje-2022-05-10",
+    "slug": "grubisno-polje-2022-05-10",
+    "titleHr": "Koncert · Grubišno Polje",
+    "titleEn": "Concert · Grubišno Polje",
+    "date": "2022-05-10",
+    "time": "",
+    "city": "Grubišno Polje",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "vinkovci-2022-05-11",
+    "slug": "vinkovci-2022-05-11",
+    "titleHr": "Koncert · Vinkovci",
+    "titleEn": "Concert · Vinkovci",
+    "date": "2022-05-11",
+    "time": "",
+    "city": "Vinkovci",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "lasinja-2022-06-16",
+    "slug": "lasinja-2022-06-16",
+    "titleHr": "Koncert · Lasinja",
+    "titleEn": "Concert · Lasinja",
+    "date": "2022-06-16",
+    "time": "",
+    "city": "Lasinja",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "tuhelj-2022-07-01",
+    "slug": "tuhelj-2022-07-01",
+    "titleHr": "Koncert · Tuhelj",
+    "titleEn": "Concert · Tuhelj",
+    "date": "2022-07-01",
+    "time": "",
+    "city": "Tuhelj",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "zagreb-2023-02-10",
+    "slug": "zagreb-2023-02-10",
+    "titleHr": "Humanitarni koncert",
+    "titleEn": "Charity concert",
+    "date": "2023-02-10",
+    "time": "",
+    "city": "Zagreb",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "split-2023-04-19",
+    "slug": "split-2023-04-19",
+    "titleHr": "Koncert u ciklusu Vinko Lesić",
+    "titleEn": "Vinko Lesić concert series",
+    "date": "2023-04-19",
+    "time": "",
+    "city": "Split",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "lasinja-2023-06-13",
+    "slug": "lasinja-2023-06-13",
+    "titleHr": "Koncert · Lasinja",
+    "titleEn": "Concert · Lasinja",
+    "date": "2023-06-13",
+    "time": "",
+    "city": "Lasinja",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "krizevci-2024-04-24",
+    "slug": "krizevci-2024-04-24",
+    "titleHr": "Koncert · Križevci",
+    "titleEn": "Concert · Križevci",
+    "date": "2024-04-24",
+    "time": "",
+    "city": "Križevci",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "zapresic-2024-05-05",
+    "slug": "zapresic-2024-05-05",
+    "titleHr": "Koncert · Zaprešić",
+    "titleEn": "Concert · Zaprešić",
+    "date": "2024-05-05",
+    "time": "",
+    "city": "Zaprešić",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "grubisno-polje-2024-05-14",
+    "slug": "grubisno-polje-2024-05-14",
+    "titleHr": "Koncert · Grubišno Polje",
+    "titleEn": "Concert · Grubišno Polje",
+    "date": "2024-05-14",
+    "time": "",
+    "city": "Grubišno Polje",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "petrinja-2024-05-27",
+    "slug": "petrinja-2024-05-27",
+    "titleHr": "Koncert · Petrinja",
+    "titleEn": "Concert · Petrinja",
+    "date": "2024-05-27",
+    "time": "",
+    "city": "Petrinja",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "hrvatski-cuntic-2024-06-13",
+    "slug": "hrvatski-cuntic-2024-06-13",
+    "titleHr": "Zrin festival",
+    "titleEn": "Zrin Festival",
+    "date": "2024-06-13",
+    "time": "",
+    "city": "Hrvatski Čuntić",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "gornji-kosinj-2024-09-15",
+    "slug": "gornji-kosinj-2024-09-15",
+    "titleHr": "Lika Like festival",
+    "titleEn": "Lika Like Festival",
+    "date": "2024-09-15",
+    "time": "",
+    "city": "Gornji Kosinj",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "petrinja-2025-04-14",
+    "slug": "petrinja-2025-04-14",
+    "titleHr": "Koncert · Petrinja",
+    "titleEn": "Concert · Petrinja",
+    "date": "2025-04-14",
+    "time": "",
+    "city": "Petrinja",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "virovitica-2025-05-13",
+    "slug": "virovitica-2025-05-13",
+    "titleHr": "Koncert · Virovitica",
+    "titleEn": "Concert · Virovitica",
+    "date": "2025-05-13",
+    "time": "",
+    "city": "Virovitica",
+    "country": "Hrvatska",
+    "venue": "Gradski muzej Virovitica",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "veliko-trgovisce-2025-05-28",
+    "slug": "veliko-trgovisce-2025-05-28",
+    "titleHr": "Koncert · Veliko Trgovišće",
+    "titleEn": "Concert · Veliko Trgovišće",
+    "date": "2025-05-28",
+    "time": "",
+    "city": "Veliko Trgovišće",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "borovnica-2025-10-12",
+    "slug": "borovnica-2025-10-12",
+    "titleHr": "Koncert · Borovnica",
+    "titleEn": "Concert · Borovnica",
+    "date": "2025-10-12",
+    "time": "",
+    "city": "Borovnica",
+    "country": "Slovenija",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "grubisno-polje-2026-04-28",
+    "slug": "grubisno-polje-2026-04-28",
+    "titleHr": "Koncert · Grubišno Polje",
+    "titleEn": "Concert · Grubišno Polje",
+    "date": "2026-04-28",
+    "time": "",
+    "city": "Grubišno Polje",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "id": "zupanja-2026-07-03",
+    "slug": "zupanja-2026-07-03",
+    "titleHr": "Koncert · Županja",
+    "titleEn": "Concert · Županja",
+    "date": "2026-07-03",
+    "time": "",
+    "city": "Županja",
+    "country": "Hrvatska",
+    "venue": "",
+    "address": "",
+    "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  }
+]);
 
 export const videos: VideoRecord[] = [
   {
@@ -439,7 +886,7 @@ export const workSearchText = (work: Work) => [
   work.arranger,
   ...(work.movements?.flatMap((movement) => [movement.titleHr, movement.titleEn]) ?? [])
 ].filter(Boolean).join(' ').toLocaleLowerCase('hr');
-export const eventIsUpcoming = (event: EventItem, now = new Date()) => new Date(`${event.date}T${event.time || '00:00'}:00`) >= now;
+export const eventIsUpcoming = (event: EventItem, now = new Date()) => (event.endDate || event.date) >= new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zagreb', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
 
 const contentErrors: string[] = [];
 const assertUnique = (label: string, values: string[]) => {
