@@ -92,6 +92,7 @@ export interface EventItem {
   venue: string;
   address: string;
   city: string;
+  otherCities?: string[];
   country: string;
   latitude?: number;
   longitude?: number;
@@ -116,9 +117,9 @@ export const members: Member[] = [
     name: 'Marko Blašković', slug: 'marko-blaskovic', instrument: { hr: 'bisernica', en: 'bisernica' },
     bioShortHr: 'Docent Muzičke akademije u Zagrebu, dobitnik niza solističkih i komornih nagrada te jedan od osnivača ZTK-a.',
     bioShortEn: 'Assistant professor at the University of Zagreb Academy of Music, award-winning soloist and chamber musician, and a ZTK founding member.',
-    bioFullHr: 'Glazbeno obrazovanje stekao je u Glazbenoj školi Ferdo Livadić u Samoboru. Na Muzičkoj akademiji Sveučilišta u Zagrebu završio je studij tambure 2021. u klasi doc. art. Siniše Leopolda i postao jedan od prvih magistara muzike na tamburi. Tijekom školovanja osvojio je brojne nagrade kao solist te član komornih i orkestralnih sastava.\n\nSurađivao je sa Zagrebačkim solistima, Simfonijskim orkestrom HRT-a i Tamburaškim orkestrom HRT-a. Od 2025. docent je na Odsjeku za glazbenu pedagogiju i tambure Muzičke akademije Sveučilišta u Zagrebu, a pohađa i doktorski studij komorne glazbe na Akademiji umetnosti u Novom Sadu.',
-    bioFullEn: 'Marko studied at the Ferdo Livadić Music School in Samobor and graduated in tambura performance from the University of Zagreb Academy of Music in 2021, in the class of Siniša Leopold, becoming one of Croatia’s first master’s graduates in tambura performance. He has received numerous awards as a soloist and as a member of chamber and orchestral ensembles.\n\nHe has collaborated with the Zagreb Soloists, the Croatian Radiotelevision Symphony Orchestra and the Croatian Radiotelevision Tambura Orchestra. Since 2025 he has taught as an assistant professor at the University of Zagreb Academy of Music and is pursuing doctoral studies in chamber music at the Academy of Arts in Novi Sad.',
-    photo: '/images/ensemble/dk-101664.webp', photoPosition: '35% center', published: true
+    bioFullHr: "Marko Blašković (Zagreb, 1997.) maturirao je 2016. u Glazbenoj školi Ferdo Livadić u Samoboru, u klasi Petre Vojvodić Mrvoš. Iste je godine upisao glazbenu pedagogiju na Muzičkoj akademiji u Zagrebu, uz modul tambure u klasi Veljka Valentina Škorvage. Nakon toga upisao je instrumentalni studij tambure i diplomirao 2021.\n\nDobitnik je brojnih solističkih i komornih nagrada, među kojima su prve nagrade na državnim natjecanjima u Dubrovniku te Međunarodnom natjecanju tamburaša u Požegi. Surađuje sa Zagrebačkim solistima, Simfonijskim orkestrom HRT-a i Tamburaškim orkestrom HRT-a, čiji je redoviti suradnik od 2019. Uz potonji je praizveo koncerte za bisernicu i tamburaški orkestar Marka Bertića (2019.) i Tihomira Ranogajca (2025.).\n\nSuosnivač je Zagrebačkog tamburaškog kvarteta, s kojim nastupa u Hrvatskoj i inozemstvu, naručuje i praizvodi nova djela te je 2025. objavio album Tambura da camera. Uz koncertnu djelatnost održava predavanja na stručnim skupovima i seminarima.\n\nNa Muzičkoj akademiji u Zagrebu 2021. postao je naslovni asistent, a 2025. docent. Od 2024. pohađa doktorski studij komorne glazbe na Akademiji umetnosti u Novom Sadu.",
+    bioFullEn: "Born in Zagreb in 1997, Marko Blašković graduated from the Ferdo Livadić Music School in Samobor in 2016, studying with Petra Vojvodić Mrvoš. He then enrolled in music education at the University of Zagreb Academy of Music, alongside the tambura module taught by Veljko Valentin Škorvaga. He subsequently entered the instrumental tambura programme and graduated in 2021.\n\nHis numerous solo and chamber awards include first prizes at national competitions in Dubrovnik and the International Tambura Competition in Požega. He collaborates with the Zagreb Soloists, the Croatian Radiotelevision Symphony Orchestra and the Croatian Radiotelevision Tambura Orchestra, with which he has worked regularly since 2019. With the latter he premiered concertos for bisernica and tambura orchestra by Marko Bertić (2019) and Tihomir Ranogajac (2025).\n\nA founding member of Zagreb Tambura Quartet, he performs internationally, commissions and premieres new works, and recorded the quartet’s album Tambura da camera, released in 2025. Alongside performing, he gives lectures at professional gatherings and seminars.\n\nHe became a titular assistant at the University of Zagreb Academy of Music in 2021 and an assistant professor in 2025. Since 2024 he has pursued doctoral studies in chamber music at the Academy of Arts in Novi Sad.",
+    photo: '/images/ensemble/marko-blaskovic.webp', photoPosition: '38% center', published: true
   },
   {
     name: 'Martin Durbek', slug: 'martin-durbek', instrument: { hr: 'A-brač', en: 'A-brač' },
@@ -130,10 +131,10 @@ export const members: Member[] = [
   },
   {
     name: 'Franjo Pećarić', slug: 'franjo-pecaric', instrument: { hr: 'E-brač', en: 'E-brač' },
-    bioShortHr: 'Docent i pročelnik Odsjeka za glazbenu pedagogiju i tambure Muzičke akademije u Zagrebu, aranžer i dirigent.',
-    bioShortEn: 'Assistant professor and Head of Music Education and Tambura at the University of Zagreb Academy of Music, arranger and conductor.',
-    bioFullHr: 'Glazbeno obrazovanje stekao je u Vinkovcima i Križevcima. Na Muzičkoj akademiji Sveučilišta u Zagrebu završio je glazbenu pedagogiju 2019., a 2021. i studij tambure u klasi doc. art. Siniše Leopolda. Kao solist i član komornih i orkestralnih sastava osvojio je niz nagrada na državnim i međunarodnim natjecanjima.\n\nBavi se aranžiranjem za tamburaške sastave, a 2020. osnovao je Gradski tamburaški orkestar Ivan Goran Kovačić Sisak, gdje djeluje kao voditelj i dirigent. Docent je i pročelnik Odsjeka za glazbenu pedagogiju i tambure Muzičke akademije Sveučilišta u Zagrebu te pohađa doktorski studij komorne glazbe u Novom Sadu.',
-    bioFullEn: 'Franjo studied in Vinkovci and Križevci before completing degrees in music education in 2019 and tambura performance in 2021 at the University of Zagreb Academy of Music. As a soloist and ensemble musician he has received awards at national and international competitions.\n\nHe arranges music for tambura ensembles and in 2020 founded the Ivan Goran Kovačić City Tambura Orchestra in Sisak, where he serves as conductor and artistic leader. He is Assistant Professor and Head of Music Education and Tambura at the University of Zagreb Academy of Music and is pursuing doctoral studies in chamber music in Novi Sad.',
+    bioShortHr: 'Docent Odsjeka za glazbenu pedagogiju i tambure Muzičke akademije u Zagrebu, aranžer i dirigent.',
+    bioShortEn: 'Assistant professor of Music Education and Tambura at the University of Zagreb Academy of Music, arranger and conductor.',
+    bioFullHr: "Franjo Pećarić (Vinkovci, 1995.) glazbeno se obrazovao u Vinkovcima i Križevcima. U Glazbenoj školi Alberta Štrige 2014. maturirao je na odjelu tambure i teorijskom odjelu. Na Muzičkoj akademiji u Zagrebu diplomirao je glazbenu pedagogiju 2019., pod mentorstvom Veljka Valentina Škorvage, a studij tambure završio je 2021.\n\nKao solist i član komornih sastava osvojio je niz nagrada na regionalnim, državnim i međunarodnim natjecanjima. Od 2018. predaje tamburu u Glazbenoj školi Frana Lhotke u Sisku. Redovito sudjeluje kao predavač na stručnim skupovima Agencije za odgoj i obrazovanje i Hrvatskog društva tamburaških pedagoga, a sa svojim učenicima ostvaruje zapažene natjecateljske rezultate. Godine 2023. promoviran je u zvanje profesora mentora.\n\nGodine 2020. osnovao je Gradski tamburaški orkestar Ivan Goran Kovačić Sisak, koji vodi i kojim dirigira. Suosnivač je Zagrebačkog tamburaškog kvarteta od 2021. te je sudjelovao u snimanju autorskih nosača zvuka Tomislava Uhlika i Tihomira Ranogajca.\n\nOd akademske godine 2023./2024. pohađa doktorski studij komorne glazbe na Akademiji umetnosti u Novom Sadu. Docent je na Odsjeku za glazbenu pedagogiju i tambure Muzičke akademije u Zagrebu.",
+    bioFullEn: "Born in Vinkovci in 1995, Franjo Pećarić studied music in Vinkovci and Križevci, graduating from the tambura and music theory departments of the Albert Štriga Music School in 2014. At the University of Zagreb Academy of Music he completed a degree in music education in 2019 under the mentorship of Veljko Valentin Škorvaga, followed by a tambura degree in 2021.\n\nAs a soloist and chamber musician he has won awards at regional, national and international competitions. He has taught tambura at the Fran Lhotka Music School in Sisak since 2018 and regularly lectures at professional gatherings organised by Croatia’s Education and Teacher Training Agency and the Croatian Society of Tambura Educators. His students achieve notable competition results; in 2023 he was promoted to the professional rank of teacher mentor.\n\nIn 2020 he founded the Ivan Goran Kovačić City Tambura Orchestra in Sisak, serving as its leader and conductor. He co-founded Zagreb Tambura Quartet in 2021 and has participated in recordings of albums by Tomislav Uhlik and Tihomir Ranogajac.\n\nSince the 2023/2024 academic year he has pursued doctoral studies in chamber music at the Academy of Arts in Novi Sad. He is an assistant professor in the Department of Music Education and Tamburas at the University of Zagreb Academy of Music.",
     photo: '/images/ensemble/dk-101664.webp', photoPosition: '10% center', published: true
   },
   {
@@ -157,6 +158,16 @@ export const ensembleHighlights = {
 };
 
 export const programmes: Programme[] = [
+  {
+    id: 'ztk-jan-plevko', titleHr: 'Kvartet i klarinet', titleEn: 'Quartet and clarinet',
+    duration: 'oko 60 min', durationEn: 'approx. 60 min',
+    performersHr: 'Zagrebački tamburaški kvartet i Jan Plevko, klarinet',
+    performers: 'Zagreb Tambura Quartet & Jan Plevko, clarinet',
+    descriptionHr: 'Mozartov i Weberov klarinetski kvintet u susretu klarineta i tamburaškog kvarteta.',
+    descriptionEn: 'Mozart’s and Weber’s clarinet quintets bring together clarinet and tambura quartet.',
+    repertoireIds: ['mozart-clarinet-quintet-k581', 'weber-clarinet-quintet-op34'],
+    image: '/images/ensemble/dk-101470.webp', published: true
+  },
   {
     id: 'mozart', titleHr: 'Mozart', titleEn: 'Mozart', duration: 'oko 60 min', durationEn: 'approx. 60 min', performersHr: 'Zagrebački tamburaški kvartet i Jan Plevko, klarinet',
     descriptionHr: 'Mozartov program za tamburaški kvartet i klarinet.',
@@ -187,7 +198,7 @@ export const programmes: Programme[] = [
   }
 ];
 
-programmes.sort((a, b) => ['redovni-program', 'mozart', 'tambura-da-camera', 'po-dogovoru'].indexOf(a.id) - ['redovni-program', 'mozart', 'tambura-da-camera', 'po-dogovoru'].indexOf(b.id));
+programmes.sort((a, b) => ['redovni-program', 'ztk-jan-plevko', 'mozart', 'tambura-da-camera', 'po-dogovoru'].indexOf(a.id) - ['redovni-program', 'ztk-jan-plevko', 'mozart', 'tambura-da-camera', 'po-dogovoru'].indexOf(b.id));
 
 export const repertoire: Work[] = [
   {
@@ -350,9 +361,18 @@ export const repertoire: Work[] = [
     ],
     descriptionHr: 'Obrada Danijela Tomaševića izvodi se s klarinetistom Janom Plevkom u Mozartovu programu kvarteta.',
     descriptionEn: 'Danijel Tomašević’s arrangement is performed with clarinettist Jan Plevko in the quartet’s Mozart programme.',
-    programmeIds: ['mozart'], tags: ['international', 'classical'], published: true
+    programmeIds: ['mozart', 'ztk-jan-plevko'], tags: ['international', 'classical'], published: true
   }
 ];
+
+repertoire.push({
+  id: 'weber-clarinet-quintet-op34', slug: 'clarinet-quintet-op34', composer: 'Carl Maria von Weber',
+  titleHr: 'Klarinetski kvintet u B-duru, op. 34', titleEn: 'Clarinet Quintet in B-flat major, Op. 34',
+  workType: 'arrangement', arranger: 'Marko Blašković', writtenForZtk: false,
+  instrumentationHr: 'klarinet i tamburaški kvartet', instrumentationEn: 'clarinet and tambura quartet',
+  movements: ['I. Allegro', 'II. Fantasia – Adagio ma non troppo', 'III. Menuetto – Capriccio presto', 'IV. Rondo – Allegro giocoso'].map(title => ({ titleHr: title, titleEn: title })),
+  programmeIds: ['ztk-jan-plevko'], tags: ['international'], published: true
+});
 
 export const events: EventItem[] = [
   {
@@ -396,7 +416,7 @@ events.push(...[
     "gallery": [],
     "videos": [],
     "repertoireIds": [],
-    "published": true,
+    "published": false,
     "digitalProgrammeEnabled": false
   },
   {
@@ -808,6 +828,78 @@ events.push(...[
     "venue": "",
     "address": "",
     "guestArtists": [],
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  }
+]);
+
+// Tour ranges from the ZTK calendar; cities and collaborators from the artistic dossier.
+events.push(...[
+  {
+    "slug": "argentina-2023",
+    "titleHr": "Turneja u Argentini",
+    "titleEn": "Argentina tour",
+    "date": "2023-10-22",
+    "endDate": "2023-10-31",
+    "city": "Buenos Aires",
+    "otherCities": [
+      "Córdoba"
+    ],
+    "country": "Argentina",
+    "descriptionHr": "Koncerti u Buenos Airesu i Córdobi te radionice s lokalnim ansamblima tijekom turneje u Argentini.",
+    "descriptionEn": "Concerts in Buenos Aires and Córdoba and workshops with local ensembles during the Argentina tour.",
+    "guestArtists": [],
+    "id": "argentina-2023",
+    "time": "",
+    "venue": "",
+    "address": "",
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "slug": "berlin-2024",
+    "titleHr": "Gostovanje u Berlinu",
+    "titleEn": "Guest performance in Berlin",
+    "date": "2024-11-24",
+    "endDate": "2024-11-27",
+    "city": "Berlin",
+    "country": "Njemačka",
+    "guestArtists": [
+      "Jelena Kordić"
+    ],
+    "descriptionHr": "Gostovanje Zagrebačkog tamburaškog kvarteta u Berlinu u suradnji s mezzosopranisticom Jelenom Kordić.",
+    "descriptionEn": "Zagreb Tambura Quartet’s Berlin visit with mezzo-soprano Jelena Kordić.",
+    "id": "berlin-2024",
+    "time": "",
+    "venue": "",
+    "address": "",
+    "gallery": [],
+    "videos": [],
+    "repertoireIds": [],
+    "published": true,
+    "digitalProgrammeEnabled": false
+  },
+  {
+    "slug": "kanada-2025",
+    "titleHr": "Gostovanje u Kanadi",
+    "titleEn": "Guest performance in Canada",
+    "date": "2025-10-06",
+    "endDate": "2025-10-10",
+    "city": "Mississauga",
+    "country": "Kanada",
+    "guestArtists": [],
+    "descriptionHr": "Koncertno gostovanje Zagrebačkog tamburaškog kvarteta u Mississaugi.",
+    "descriptionEn": "Zagreb Tambura Quartet’s guest performance in Mississauga.",
+    "id": "kanada-2025",
+    "time": "",
+    "venue": "",
+    "address": "",
     "gallery": [],
     "videos": [],
     "repertoireIds": [],

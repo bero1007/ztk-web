@@ -93,7 +93,7 @@ Vizualni sustav u `src/styles/global.css` izveden je iz službenog srebrno-bijel
 - Fontovi Cormorant Garamond i Manrope poslužuju se lokalno iz paketa Fontsource (OFL).
 - Redovni program sezone je prvi i istaknuti; slijede Mozart i Tambura da camera.
 - `src/data/places.ts` sadrži potvrđena koncertna odredišta. Koordinate su približna središta gradova, ne izmišljene dvorane. Podaci događaja na istome mjestu grupiraju se u popup.
-- Karta se učitava nakon klika, a tekstualni popis mjesta dostupan je i bez nje.
+- Karta se učitava automatski pri otvaranju stranice, a tekstualni popis mjesta dostupan je i bez nje.
 - Arhiva se filtrira po godini, državi, gradu, programu i gostu, s poništavanjem i praznim rezultatom.
 - Višednevna gostovanja koriste `endDate`. Datum se uspoređuje u zoni Europe/Zagreb.
 - Nepoznate godine nastanka, opisi, prazne galerije i video sekcije nisu javni placeholderi.
@@ -104,3 +104,8 @@ Vizualni sustav u `src/styles/global.css` izveden je iz službenog srebrno-bijel
 ### Provjere
 
 `npm run build` provjerava tipove i stvara statičke stranice. `npm run check:links` provjerava interne href/src putanje. Vizualni pregledi i lokalni testovi spremaju se u ignoriranu mapu `screenshots/`, ne u javni build.
+### Ažuriranje 9. rujna 2026.
+
+Program uz Jana Plevka (Mozart i Weber) drugi je u ponudi. Biografije Marka i Franje ažurirane su prema dostavljenom tekstu, a Markov portret prema dostavljenoj fotografiji. Malezija je isključena iz javne objave. Arhiva uključuje međunarodna gostovanja iz kalendara; višednevni rasponi označavaju gostovanje, ne pojedinačni datum koncerta. Gradovi i suradnici provjereni su u umjetničkom dosjeu.
+
+Izravno slanje već podržava JSON endpoint. Za aktivaciju postavite GitHub repository variable `PUBLIC_BOOKING_ENDPOINT` (Settings → Secrets and variables → Actions → Variables), zatim pokrenite deployment. Primjer podržanog pružatelja je Formspree: vlasnik otvara obrazac, potvrđuje odredišnu adresu i preuzima endpoint u odjeljku Integration. Prije aktivacije uskladite stranicu privatnosti s odabranim pružateljem i provjerite stvarni primitak poruke. Bez konfiguriranog endpointa ostaje jasno označen mailto način; isporuka e-pošte nije testirana bez aktivacije usluge.

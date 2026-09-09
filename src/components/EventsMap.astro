@@ -6,7 +6,8 @@ const {events,lang,places=[]}=Astro.props as {events:EventItem[];lang:Lang;place
 const hr=lang==='hr';
 const points=new Map<string,{city:string;lat:number;lng:number;entries:{title:string;date:string;venue:string;href:string}[]}>();
 for(const p of places.filter(p=>p.published))points.set(p.city,{city:p.city,lat:p.latitude,lng:p.longitude,entries:[]});
-for(const e of events.filter(e=>e.published)){
+for(const event of events.filter(e=>e.published))for(const city of [event.city,...(event.otherCities||[])]){
+ const e={...event,city};
  const known=points.get(e.city),lat=e.latitude??known?.lat,lng=e.longitude??known?.lng;if(lat==null||lng==null)continue;
  const key=e.latitude!=null?e.latitude+','+e.longitude:e.city;
  const point=points.get(key)||{city:e.city,lat,lng,entries:[]};
@@ -16,7 +17,7 @@ for(const e of events.filter(e=>e.published)){
 const items=[...points.values()];
 ---
 {items.length>0&&<div class="map-shell" data-map-shell data-points={JSON.stringify(items)} data-lang={lang}>
- <div class="map-consent"><p>{hr?'Istražite koncertna odredišta kvarteta. Učitavanjem karte povezujete se s uslugom OpenStreetMap.':'Explore the quartet’s concert destinations. Loading the map connects to OpenStreetMap.'}</p><button class="button outline" data-load-map>{hr?'Učitaj kartu':'Load map'} →</button></div>
+ <div class="map-consent"><p>{hr?'Istražite koncertna odredišta kvarteta. Učitavanjem karte povezujete se s uslugom OpenStreetMap.':'Explore the quartet’s concert destinations. Loading the map connects to OpenStreetMap.'}</p><button class="button outline" data-load-map hidden>{hr?'Učitaj kartu':'Load map'} →</button></div>
  <div class="map-ranges" hidden><button type="button" class="button outline" data-map-region="local">{hr?'Hrvatska i okolica':'Croatia and nearby'}</button><button type="button" class="button outline" data-map-region="world">{hr?'Sva odredišta':'All destinations'}</button></div>
  <div class="events-map" hidden aria-label={hr?'Karta koncertnih odredišta':'Map of concert destinations'}></div>
  <p class="map-note">{hr?'Oznake gradova prikazuju približan položaj, a ne nužno koncertnu dvoranu.':'City markers show approximate locations, not necessarily the concert venue.'}</p>
@@ -26,8 +27,8 @@ const items=[...points.values()];
  import 'leaflet/dist/leaflet.css';
  document.querySelectorAll<HTMLElement>('[data-map-shell]').forEach(shell=>{
  const button=shell.querySelector<HTMLButtonElement>('[data-load-map]')!;
- button.addEventListener('click',async()=>{
- button.disabled=true;
+ const initialize=async()=>{
+ button.disabled=true;button.hidden=true;
  try{
  const L=await import('leaflet');
  const el=shell.querySelector<HTMLElement>('.events-map')!;el.hidden=false;
@@ -45,8 +46,10 @@ const items=[...points.values()];
  shell.querySelector<HTMLElement>('.map-ranges')!.hidden=false;
  shell.querySelectorAll<HTMLButtonElement>('[data-map-region]').forEach(control=>control.addEventListener('click',()=>fit(control.dataset.mapRegion!)));
  shell.querySelector<HTMLElement>('.map-consent')!.hidden=true;requestAnimationFrame(()=>map.invalidateSize());
- }catch{button.disabled=false;button.textContent=shell.dataset.lang==='hr'?'Pokušajte ponovno':'Try again';}
- });
+ }catch{button.hidden=false;button.disabled=false;button.textContent=shell.dataset.lang==='hr'?'Pokušajte ponovno':'Try again';}
+ };
+ button.addEventListener('click',initialize);
+ void initialize();
  });
 </script>
 <style>

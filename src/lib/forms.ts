@@ -13,7 +13,6 @@ export function mailtoFor(form:HTMLFormElement,data:Record<string,string>,subjec
  return 'mailto:'+form.dataset.email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(lines.join('\n'));
 }
 export async function submitEnquiry(endpoint:string,data:Record<string,string>){
- const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),signal:AbortSignal.timeout(15000)});
+ const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data),signal:AbortSignal.timeout(15000)});
  if(!response.ok)throw new Error('Submission failed');
 }
-

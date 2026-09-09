@@ -12,7 +12,7 @@ const { eyebrow, title, description, subtitle, photo, photoAlt = '', photoPositi
       {description && <p class="lead">{description}</p>}
       <slot />
     </div>
-    {photo ? <div class="hero-photo" role="img" aria-label={photoAlt} style={`background-image:linear-gradient(to top, rgba(7,28,55,.58),transparent 60%),url(${path(photo)});background-size:cover;background-position:${photoPosition}`} /> : null}
+    {photo ? <div class="hero-photo"><img src={path(photo)} alt={photoAlt} style={`object-position:${photoPosition}`} fetchpriority="high" decoding="async" /></div> : null}
   </div>
 </section>
 <style>.compact-hero { min-height: 520px; }</style>
